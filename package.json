@@ -1,0 +1,136 @@
+{
+  "name": "quicklook-preview-for-vscode",
+  "displayName": "QuickLook Preview for VS Code",
+  "description": "Preview local files from VS Code with the Windows QuickLook app.",
+  "version": "0.1.0",
+  "publisher": "occasional16",
+  "license": "AGPL-3.0-only",
+  "icon": "assets/icon.png",
+  "engines": {
+    "vscode": "^1.91.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "extensionKind": [
+    "ui"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/occasional16/quicklook-for-vscode.git"
+  },
+  "bugs": {
+    "url": "https://github.com/occasional16/quicklook-for-vscode/issues"
+  },
+  "homepage": "https://github.com/occasional16/quicklook-for-vscode#readme",
+  "galleryBanner": {
+    "color": "#1E1E1E",
+    "theme": "dark"
+  },
+  "keywords": [
+    "quicklook",
+    "preview",
+    "file",
+    "file-preview",
+    "windows"
+  ],
+  "main": "./out/extension.js",
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "test": "npm run compile && node --test ./out/test/**/*.test.js",
+    "clean:vsix": "node ./scripts/clean-vsix.js",
+    "package": "npm run clean:vsix && vsce package --no-dependencies --allow-missing-repository",
+    "package:clean": "npm run package"
+  },
+  "contributes": {
+    "commands": [
+      {
+        "command": "quicklook.previewFile",
+        "title": "Preview File with QuickLook",
+        "category": "QuickLook",
+        "icon": "$(eye)"
+      },
+      {
+        "command": "quicklook.checkInstallation",
+        "title": "Check QuickLook Installation",
+        "category": "QuickLook",
+        "icon": "$(check)"
+      },
+      {
+        "command": "quicklook.setExecutablePath",
+        "title": "Set QuickLook Executable Path",
+        "category": "QuickLook",
+        "icon": "$(settings-gear)"
+      }
+    ],
+    "keybindings": [
+      {
+        "command": "quicklook.previewFile",
+        "key": "`",
+        "win": "`",
+        "when": "filesExplorerFocus"
+      }
+    ],
+    "menus": {
+      "explorer/context": [
+        {
+          "command": "quicklook.previewFile",
+          "when": "resourceScheme == file",
+          "group": "navigation@10"
+        }
+      ],
+      "editor/title/context": [
+        {
+          "command": "quicklook.previewFile",
+          "when": "resourceScheme == file",
+          "group": "navigation@10"
+        }
+      ],
+      "editor/context": [
+        {
+          "command": "quicklook.previewFile",
+          "when": "resourceScheme == file",
+          "group": "navigation@10"
+        }
+      ]
+    },
+    "configuration": {
+      "title": "QuickLook",
+      "properties": {
+        "quicklook.executablePath": {
+          "type": "string",
+          "default": "D:\\Program Files\\QuickLook\\QuickLook.exe",
+          "markdownDescription": "QuickLook executable command or full path. Defaults to `D:\\Program Files\\QuickLook\\QuickLook.exe` for this local build."
+        },
+        "quicklook.previewOptions": {
+          "type": "array",
+          "default": [],
+          "uniqueItems": true,
+          "items": {
+            "type": "string",
+            "enum": [
+              "/pin",
+              "/top",
+              "-pin",
+              "-top"
+            ]
+          },
+          "markdownDescription": "Additional QuickLook command line options appended after the file path. Official options include `/pin` and `/top`."
+        },
+        "quicklook.useExplorerClipboardFallback": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "Use VS Code's Copy Path command to resolve the focused Explorer selection when a keybinding does not provide a resource URI. The previous clipboard text is restored immediately."
+        }
+      }
+    }
+  },
+  "devDependencies": {
+    "@types/node": "^20.14.10",
+    "@types/vscode": "^1.91.0",
+    "@vscode/vsce": "^3.2.2",
+    "typescript": "^5.5.3"
+  }
+}
