@@ -2,7 +2,7 @@
   "name": "preview-all-in-one-with-quicklook",
   "displayName": "Preview All-in-One with QuickLook",
   "description": "Preview many local file types from VS Code through Windows QuickLook.",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "publisher": "occasional16",
   "license": "AGPL-3.0-only",
   "icon": "assets/icon.png",
@@ -70,9 +70,33 @@
     "keybindings": [
       {
         "command": "quicklook.previewFile",
-        "key": "`",
-        "win": "`",
-        "when": "filesExplorerFocus"
+        "key": "alt+`",
+        "win": "alt+`",
+        "when": "filesExplorerFocus && !inputFocus"
+      },
+      {
+        "command": "quicklook.previewFile",
+        "key": "alt+`",
+        "win": "alt+`",
+        "when": "explorerViewletFocus && !inputFocus"
+      },
+      {
+        "command": "quicklook.previewFile",
+        "key": "alt+`",
+        "win": "alt+`",
+        "when": "editorTextFocus",
+        "args": {
+          "source": "activeEditor"
+        }
+      },
+      {
+        "command": "quicklook.previewFile",
+        "key": "alt+`",
+        "win": "alt+`",
+        "when": "!editorTextFocus && !inputFocus && !sideBarFocus && !panelFocus && !terminalFocus && !auxiliaryBarFocus",
+        "args": {
+          "source": "activeEditor"
+        }
       }
     ],
     "menus": {
@@ -86,21 +110,28 @@
       "editor/title": [
         {
           "command": "quicklook.previewFile",
-          "when": "resourceScheme == file",
+          "when": "resourceScheme == file || resourceScheme == git",
           "group": "navigation@10"
         }
       ],
       "editor/title/context": [
         {
           "command": "quicklook.previewFile",
-          "when": "resourceScheme == file",
+          "when": "resourceScheme == file || resourceScheme == git",
           "group": "navigation@10"
         }
       ],
       "editor/context": [
         {
           "command": "quicklook.previewFile",
-          "when": "resourceScheme == file",
+          "when": "resourceScheme == file || resourceScheme == git",
+          "group": "navigation@10"
+        }
+      ],
+      "scm/resourceState/context": [
+        {
+          "command": "quicklook.previewFile",
+          "when": "scmProvider == git",
           "group": "navigation@10"
         }
       ]

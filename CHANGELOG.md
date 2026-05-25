@@ -2,6 +2,21 @@
 
 All notable changes to this project are documented in this file.
 
+## 0.1.2 - 2026-05-26
+
+### Changed
+
+- Changed the default preview keybinding from `Space` to ``Alt+` `` for Explorer and active editor preview flows.
+- Kept the Explorer viewlet focus fallback for ``Alt+` `` so selected Explorer files can still trigger QuickLook when `filesExplorerFocus` is not active.
+
+### Added
+
+- Added a Source Control changed file context menu entry for previewing local SCM resources with QuickLook.
+- Added editor preview support for Git history resources opened from SCM Graph / History by materializing `git` URI content into temporary local files.
+- Added default ``Alt+` `` keybindings for active local and Git history editor preview flows while preserving normal text input.
+- Added explicit active-editor keybinding arguments so keyboard-triggered previews use the same current editor target as the editor title button.
+- Added broader URI-like command resource parsing for SCM resource states and Search-like result objects.
+
 ## 0.1.1 - 2026-05-25
 
 ### Changed

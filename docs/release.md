@@ -71,7 +71,7 @@ npx vsce publish --packagePath preview-all-in-one-with-quicklook-<version>.vsix
 - Marketplace 页面标题、简介和 README 正确。
 - License 显示 `AGPL-3.0-only`。
 - 命令可搜索。
-- 资源管理器 `Space` 快捷键可用。
+- 资源管理器 ``Alt+` `` 快捷键可用。
 - 编辑器标题按钮可用。
 - Source Control 变更文件右键预览可用。
 - 安装检查和路径设置命令可用。

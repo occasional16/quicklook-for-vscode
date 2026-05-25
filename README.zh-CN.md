@@ -7,9 +7,9 @@
 ## 功能
 
 - 使用 QuickLook 原生窗口预览选中或当前打开的本地文件。
-- 支持编辑器标题右侧按钮，一键预览当前本地文件。
-- 默认在资源管理器焦点下按反引号键 `` ` `` 快速预览。
-- 支持资源管理器右键菜单、编辑器右键菜单、编辑器标题菜单和命令面板。
+- 支持编辑器标题右侧按钮，一键预览当前本地文件或 Git 历史文件。
+- 默认在资源管理器或当前编辑器中按 ``Alt+` `` 快速预览。
+- 支持资源管理器右键菜单、Source Control 变更列表、编辑器右键菜单、编辑器标题菜单、Search Results 打开文件后预览、SCM Graph / History 打开文件后预览，以及命令面板。
 - 使用 `QuickLook: Check QuickLook Installation` 检查 QuickLook 安装状态。
 - 使用 `QuickLook: Set QuickLook Executable Path` 配置 QuickLook 可执行文件路径。
 - 支持自动探测路径、浏览选择 `QuickLook.exe`、手动输入路径。
@@ -18,7 +18,7 @@
 
 ## Preview All-in-One 覆盖面
 
-这个扩展使用本机 QuickLook 作为预览引擎。因此，VS Code 资源管理器和编辑器标签可以变成快速的通用预览入口，而不是又一个单格式查看器。
+这个扩展使用本机 QuickLook 作为预览引擎。因此，VS Code 资源管理器、编辑器标签、Search Results、Source Control 变更列表和 SCM Graph / History 可以变成快速的通用预览流程，而不是又一个单格式查看器。
 
 以下是 QuickLook 官方支持格式中的部分示例：
 
@@ -56,16 +56,16 @@ QuickLook 官方仓库：<https://github.com/QL-Win/QuickLook>
 ## 使用方式
 
 1. 安装并启动 QuickLook。
-2. 在 VS Code 资源管理器里选中一个本地文件，或在编辑器中打开一个本地文件。
-3. 按 `` ` ``、点击编辑器标题右侧预览按钮，或从命令面板运行 `QuickLook: Preview with QuickLook`。
+2. 在 VS Code 资源管理器里选中一个本地文件，或从资源管理器、Search Results、Source Control 变更列表、SCM Graph / History 打开一个文件。
+3. 在资源管理器或当前编辑器中按 ``Alt+` ``，也可以点击编辑器标题右侧预览按钮，或从命令面板运行 `QuickLook: Preview with QuickLook`。
 
-默认反引号快捷键只在资源管理器焦点下生效，不会影响编辑器里正常输入代码。你也可以在 VS Code Keyboard Shortcuts 中给 `QuickLook: Preview with QuickLook` 设置任意快捷键或组合键。
+默认 ``Alt+` `` 快捷键只在资源管理器、当前本地编辑器或 Git 历史编辑器中生效，避免抢占编辑器正文中的 `Space` 输入。你也可以在 VS Code Keyboard Shortcuts 中给 `QuickLook: Preview with QuickLook` 设置任意快捷键或组合键。
 
 ## 命令
 
 | 命令 | 说明 |
 | --- | --- |
-| `QuickLook: Preview with QuickLook` | 使用 QuickLook 预览选中或当前打开的本地文件。 |
+| `QuickLook: Preview with QuickLook` | 使用 QuickLook 预览选中文件、当前本地文件或当前 Git 历史文件。 |
 | `QuickLook: Check QuickLook Installation` | 检查配置路径、探测路径和安装状态。 |
 | `QuickLook: Set QuickLook Executable Path` | 使用探测路径、浏览选择、手动输入或打开设置。 |
 
@@ -119,7 +119,7 @@ npm run package
 
 ## 发布流程
 
-见 [docs/dev/2-release-process.md](docs/dev/2-release-process.md)。
+见 [docs/release.md](docs/release.md)。
 
 ## 许可证
 

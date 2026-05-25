@@ -19,6 +19,10 @@ const setExecutablePathCommandId = 'quicklook.setExecutablePath';
 const setPathAction = 'Set Path';
 const openSettingsAction = 'Open Settings';
 const showLogAction = 'Show Log';
+const gitScheme = 'git';
+const temporaryPreviewFileLifetimeMs = 10 * 60 * 1000;
+
+const temporaryPreviewFiles = new Set<string>();
 
 type PathSetupAction = 'detected' | 'browse' | 'manual' | 'settings';
 
@@ -32,6 +36,10 @@ interface ExecutablePathSetting {
   source: string;
 }
 
+interface PreviewCommandOptions {
+  source?: 'activeEditor';
+}
+
 let outputChannel: vscode.OutputChannel | undefined;
 
 export function activate(context: vscode.ExtensionContext): void {
@@ -39,8 +47,8 @@ export function activate(context: vscode.ExtensionContext): void {
 
   context.subscriptions.push(
     outputChannel,
-    vscode.commands.registerCommand(previewCommandId, async (resource?: vscode.Uri, selectedResources?: vscode.Uri[]) => {
-      await previewFile(resource, selectedResources);
+    vscode.commands.registerCommand(previewCommandId, async (resource?: unknown, selectedResources?: unknown[]) => {
+      await previewFile(context, resource, selectedResources);
     }),
     vscode.commands.registerCommand(checkInstallationCommandId, async () => {
       await checkInstallation();
@@ -51,9 +59,11 @@ export function activate(context: vscode.ExtensionContext): void {
   );
 }
 
-export function deactivate(): void {}
+export async function deactivate(): Promise<void> {
+  await cleanupTemporaryPreviewFiles();
+}
 
-async function previewFile(resource?: vscode.Uri, selectedResources?: vscode.Uri[]): Promise<void> {
+async function previewFile(context: vscode.ExtensionContext, resource?: unknown, selectedResources?: unknown[]): Promise<void> {
   log('Preview command invoked.');
   const targetUri = await resolvePreviewTarget(resource, selectedResources);
 
@@ -65,17 +75,8 @@ async function previewFile(resource?: vscode.Uri, selectedResources?: vscode.Uri
 
   log(`Resolved preview target: ${targetUri.fsPath || targetUri.toString()}`);
 
-  if (targetUri.scheme !== 'file') {
-    log(`Preview cancelled: unsupported URI scheme '${targetUri.scheme}'.`);
-    vscode.window.showWarningMessage('QuickLook can only preview local file system resources.');
-    return;
-  }
-
-  try {
-    await vscode.workspace.fs.stat(targetUri);
-  } catch {
-    log(`Preview cancelled: target no longer exists: ${targetUri.fsPath}`);
-    vscode.window.showErrorMessage(`The selected file no longer exists: ${targetUri.fsPath}`);
+  const localPreviewUri = await resolveLocalPreviewFile(context, targetUri);
+  if (!localPreviewUri) {
     return;
   }
 
@@ -84,18 +85,110 @@ async function previewFile(resource?: vscode.Uri, selectedResources?: vscode.Uri
   logResolution('Preview launch resolution', getExecutablePathSetting(), resolution);
 
   try {
-    await launchQuickLook(targetUri.fsPath, {
+    await launchQuickLook(localPreviewUri.fsPath, {
       executablePath: resolution.executablePath,
       previewOptions: launchSettings.previewOptions
     });
-    log(`QuickLook launch requested successfully for: ${targetUri.fsPath}`);
+    log(`QuickLook launch requested successfully for: ${localPreviewUri.fsPath}`);
   } catch (error) {
     log(`QuickLook launch failed: ${error instanceof Error ? error.message : String(error)}`);
     vscode.window.showErrorMessage(createLaunchFailureMessage(resolution.executablePath, error));
   }
 }
 
-async function resolvePreviewTarget(resource?: vscode.Uri, selectedResources?: vscode.Uri[]): Promise<vscode.Uri | undefined> {
+async function resolveLocalPreviewFile(context: vscode.ExtensionContext, targetUri: vscode.Uri): Promise<vscode.Uri | undefined> {
+  if (targetUri.scheme === 'file') {
+    return validateExistingFile(targetUri);
+  }
+
+  if (targetUri.scheme === gitScheme) {
+    return createTemporaryPreviewFile(context, targetUri);
+  }
+
+  log(`Preview cancelled: unsupported URI scheme '${targetUri.scheme}'.`);
+  vscode.window.showWarningMessage('QuickLook can only preview local file system resources and Git preview files.');
+  return undefined;
+}
+
+async function validateExistingFile(uri: vscode.Uri): Promise<vscode.Uri | undefined> {
+  try {
+    await vscode.workspace.fs.stat(uri);
+    return uri;
+  } catch {
+    log(`Preview cancelled: target no longer exists: ${uri.fsPath}`);
+    vscode.window.showErrorMessage(`The selected file no longer exists: ${uri.fsPath}`);
+    return undefined;
+  }
+}
+
+async function createTemporaryPreviewFile(context: vscode.ExtensionContext, sourceUri: vscode.Uri): Promise<vscode.Uri | undefined> {
+  try {
+    const bytes = await vscode.workspace.fs.readFile(sourceUri);
+    const previewDirectoryUri = vscode.Uri.joinPath(context.globalStorageUri, 'preview-cache');
+    const previewFileUri = vscode.Uri.joinPath(previewDirectoryUri, createTemporaryPreviewFileName(sourceUri));
+
+    await vscode.workspace.fs.createDirectory(previewDirectoryUri);
+    await vscode.workspace.fs.writeFile(previewFileUri, bytes);
+    trackTemporaryPreviewFile(previewFileUri);
+
+    log(`Prepared temporary preview file for '${sourceUri.toString()}': ${previewFileUri.fsPath}`);
+    return previewFileUri;
+  } catch (error) {
+    log(`Preview cancelled: failed to prepare Git preview file: ${error instanceof Error ? error.message : String(error)}`);
+    vscode.window.showErrorMessage('Could not prepare this Git preview for QuickLook.');
+    return undefined;
+  }
+}
+
+function createTemporaryPreviewFileName(sourceUri: vscode.Uri): string {
+  const sourcePath = getGitUriFilePath(sourceUri) ?? sourceUri.fsPath ?? sourceUri.path;
+  const sourceBaseName = path.basename(sourcePath) || 'preview';
+  const extension = path.extname(sourceBaseName);
+  const name = sanitizeFileName(path.basename(sourceBaseName, extension)) || 'preview';
+  const suffix = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
+
+  return `${name.slice(0, 80)}-${suffix}${extension}`;
+}
+
+function getGitUriFilePath(uri: vscode.Uri): string | undefined {
+  if (uri.scheme !== gitScheme || !uri.query) {
+    return undefined;
+  }
+
+  try {
+    const parsedQuery = JSON.parse(uri.query) as Record<string, unknown>;
+    return typeof parsedQuery.path === 'string' ? parsedQuery.path : undefined;
+  } catch {
+    return undefined;
+  }
+}
+
+function sanitizeFileName(value: string): string {
+  return value.replace(/[<>:"/\\|?*\x00-\x1F]/g, '_').trim().replace(/[. ]+$/g, '');
+}
+
+function trackTemporaryPreviewFile(uri: vscode.Uri): void {
+  temporaryPreviewFiles.add(uri.toString());
+  setTimeout(() => {
+    void cleanupTemporaryPreviewFile(uri);
+  }, temporaryPreviewFileLifetimeMs);
+}
+
+async function cleanupTemporaryPreviewFiles(): Promise<void> {
+  await Promise.all(Array.from(temporaryPreviewFiles).map((uriString) => cleanupTemporaryPreviewFile(vscode.Uri.parse(uriString))));
+}
+
+async function cleanupTemporaryPreviewFile(uri: vscode.Uri): Promise<void> {
+  try {
+    await vscode.workspace.fs.delete(uri, { useTrash: false });
+  } catch {
+    // Ignore cleanup failures; QuickLook may still be reading the file.
+  } finally {
+    temporaryPreviewFiles.delete(uri.toString());
+  }
+}
+
+async function resolvePreviewTarget(resource?: unknown, selectedResources?: unknown[]): Promise<vscode.Uri | undefined> {
   const explicitResource = getExplicitResource(resource, selectedResources);
   if (explicitResource) {
     return explicitResource;
@@ -109,12 +202,71 @@ async function resolvePreviewTarget(resource?: vscode.Uri, selectedResources?: v
   return vscode.window.activeTextEditor?.document.uri;
 }
 
-function getExplicitResource(resource?: vscode.Uri, selectedResources?: vscode.Uri[]): vscode.Uri | undefined {
-  if (selectedResources?.length) {
-    return selectedResources.find((selectedResource) => selectedResource.scheme === 'file') ?? selectedResources[0];
+function getExplicitResource(resource?: unknown, selectedResources?: unknown[]): vscode.Uri | undefined {
+  if (isPreviewCommandOptions(resource) && resource.source === 'activeEditor') {
+    return vscode.window.activeTextEditor?.document.uri;
   }
 
-  return resource;
+  if (selectedResources?.length) {
+    const selectedUris = selectedResources
+      .map((selectedResource) => getUriFromCommandResource(selectedResource))
+      .filter((selectedUri): selectedUri is vscode.Uri => Boolean(selectedUri));
+
+    return selectedUris.find((selectedUri) => selectedUri.scheme === 'file') ?? selectedUris[0];
+  }
+
+  return getUriFromCommandResource(resource);
+
+  function isPreviewCommandOptions(value: unknown): value is PreviewCommandOptions {
+    if (!value || typeof value !== 'object') {
+      return false;
+    }
+
+    return (value as Record<string, unknown>).source === 'activeEditor';
+  }
+}
+
+function getUriFromCommandResource(resource: unknown, depth = 0): vscode.Uri | undefined {
+  if (depth > 3) {
+    return undefined;
+  }
+
+  if (isUri(resource)) {
+    return resource;
+  }
+
+  if (!resource || typeof resource !== 'object') {
+    return undefined;
+  }
+
+  const resourceRecord = resource as Record<string, unknown>;
+  const directUri = resourceRecord.resourceUri ?? resourceRecord.uri ?? resourceRecord.resource;
+  const resolvedDirectUri = getUriFromCommandResource(directUri, depth + 1);
+  if (resolvedDirectUri) {
+    return resolvedDirectUri;
+  }
+
+  const parent = resourceRecord.parent;
+  if (typeof parent === 'function') {
+    try {
+      return getUriFromCommandResource(parent.call(resource), depth + 1);
+    } catch {
+      return undefined;
+    }
+  }
+
+  return undefined;
+}
+
+function isUri(value: unknown): value is vscode.Uri {
+  if (!value || typeof value !== 'object') {
+    return false;
+  }
+
+  const candidate = value as Record<string, unknown>;
+  return typeof candidate.scheme === 'string'
+    && typeof candidate.fsPath === 'string'
+    && typeof candidate.toString === 'function';
 }
 
 async function resolveResourceFromExplorerSelection(): Promise<vscode.Uri | undefined> {
