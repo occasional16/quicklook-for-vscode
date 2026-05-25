@@ -1,10 +1,10 @@
-# 1. QuickLook Preview for VS Code 优化选项
+# 1. Preview All-in-One with QuickLook 优化选项
 
 本文档记录插件在基本预览功能完成后的后续优化方向、已确认决策和执行状态。
 
 ## 当前状态
 
-- 已实现 `QuickLook: Preview File` 命令。
+- 已实现 `QuickLook: Preview with QuickLook` 命令。
 - 已支持资源管理器右键、编辑器右键、编辑器标题菜单和命令面板入口。
 - 默认快捷键已改为反引号键 `` ` ``，并限制在资源管理器焦点下生效，避免影响编辑器里正常输入代码。
 - 已支持 `quicklook.executablePath` 手动配置 QuickLook 可执行文件路径。
@@ -83,7 +83,7 @@
 
 当前状态：反引号键只在资源管理器焦点下生效，不在编辑器焦点下抢占输入。
 
-用户仍可在 VS Code Keyboard Shortcuts 中为 `QuickLook: Preview File` 设置任意按键或组合键。
+用户仍可在 VS Code Keyboard Shortcuts 中为 `QuickLook: Preview with QuickLook` 设置任意按键或组合键。
 
 ## 优先级 C：测试和发布质量
 

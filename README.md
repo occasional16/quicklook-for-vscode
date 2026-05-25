@@ -1,12 +1,13 @@
-# QuickLook Preview for VS Code
+# Preview All-in-One with QuickLook
 
-Preview local files from VS Code with the Windows [QuickLook](https://github.com/QL-Win/QuickLook) app.
+Preview many local file types from VS Code through the Windows [QuickLook](https://github.com/QL-Win/QuickLook) app.
 
 > 中文文档：[README.zh-CN.md](README.zh-CN.md)
 
 ## Features
 
-- Preview a selected local file with `QuickLook: Preview File`.
+- Preview selected local files in the native Windows QuickLook preview window.
+- Use the editor title button to preview the active local file without leaving the editor.
 - Use the default Explorer keybinding `` ` `` to preview the selected file quickly.
 - Run from Explorer context menus, editor context menus, editor title menus, and the Command Palette.
 - Check your QuickLook setup with `QuickLook: Check QuickLook Installation`.
@@ -14,6 +15,29 @@ Preview local files from VS Code with the Windows [QuickLook](https://github.com
 - Choose a detected QuickLook path, browse for `QuickLook.exe`, or enter a path manually.
 - Pass official QuickLook command line options such as `/pin` and `/top`.
 - Inspect troubleshooting details in the `QuickLook` output channel.
+
+## Preview All-in-One Coverage
+
+This extension uses your local QuickLook installation as the preview engine. That makes VS Code Explorer and editor tabs a fast all-in-one preview entry point instead of another single-format viewer.
+
+Examples from QuickLook's official supported formats:
+
+| Category | Examples |
+| --- | --- |
+| Text and code | `.txt`, `.log`, `.json`, `.xml`, `.yaml`, `.md`, `.csv`, `.py`, `.js`, `.ts`, `.go`, `.rs`, `.sql` |
+| Images and design assets | `.jpg`, `.png`, `.gif`, `.webp`, `.svg`, RAW images, `.psd`, `.ai`, `.fig`, `.sketch`, `.xd`, `.drawio` |
+| Documents | `.pdf`, Word, Excel, PowerPoint, OpenDocument, Visio |
+| Archives and packages | `.zip`, `.7z`, `.rar`, `.tar`, `.vsix`, `.whl`, `.jar`, comic archives |
+| Markdown and data | Markdown variants, Mermaid, `.csv`, `.tsv` |
+| Fonts | `.ttf`, `.otf`, `.woff`, `.woff2`, `.ttc` |
+| Media, web and mail | Common video/audio formats, `.html`, `.mhtml`, `.url`, `.eml`, `.msg` |
+| Binaries and installers | `.exe`, `.dll`, `.msi`, `.msix`, `.apk`, `.deb`, `.rpm` |
+| QuickLook plugins | OfficeViewer, PdfViewer-Native, PostScriptViewer, CADImport, and more |
+
+Actual preview support depends on your installed QuickLook version and QuickLook plugins. See the official QuickLook resources for the current format list:
+
+- [QuickLook README](https://github.com/QL-Win/QuickLook)
+- [QuickLook supported formats](https://github.com/QL-Win/QuickLook/blob/master/SUPPORTED_FORMATS.md)
 
 ## Screenshots
 
@@ -32,16 +56,16 @@ Install QuickLook from the official repository: <https://github.com/QL-Win/Quick
 ## Usage
 
 1. Install and start QuickLook.
-2. Select a local file in VS Code Explorer.
-3. Press `` ` `` or run `QuickLook: Preview File` from the Command Palette.
+2. Select a local file in VS Code Explorer, or open a local file in the editor.
+3. Press `` ` ``, click the editor title preview button, or run `QuickLook: Preview with QuickLook` from the Command Palette.
 
-The default `` ` `` keybinding only applies when VS Code Explorer has focus, so it does not override normal typing in the editor. You can bind `QuickLook: Preview File` to any key or key combination in VS Code Keyboard Shortcuts.
+The default `` ` `` keybinding only applies when VS Code Explorer has focus, so it does not override normal typing in the editor. You can bind `QuickLook: Preview with QuickLook` to any key or key combination in VS Code Keyboard Shortcuts.
 
 ## Commands
 
 | Command | Description |
 | --- | --- |
-| `QuickLook: Preview File` | Preview the selected local file with QuickLook. |
+| `QuickLook: Preview with QuickLook` | Preview the selected or active local file with QuickLook. |
 | `QuickLook: Check QuickLook Installation` | Check the configured path, detected path, and setup status. |
 | `QuickLook: Set QuickLook Executable Path` | Use a detected path, browse for `QuickLook.exe`, enter a path manually, or open settings. |
 

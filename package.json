@@ -1,8 +1,8 @@
 {
-  "name": "quicklook-preview-for-vscode",
-  "displayName": "QuickLook Preview for VS Code",
-  "description": "Preview local files from VS Code with the Windows QuickLook app.",
-  "version": "0.1.0",
+  "name": "preview-all-in-one-with-quicklook",
+  "displayName": "Preview All-in-One with QuickLook",
+  "description": "Preview many local file types from VS Code through Windows QuickLook.",
+  "version": "0.1.1",
   "publisher": "occasional16",
   "license": "AGPL-3.0-only",
   "icon": "assets/icon.png",
@@ -30,9 +30,11 @@
   "keywords": [
     "quicklook",
     "preview",
-    "file",
+    "all-in-one-preview",
     "file-preview",
-    "windows"
+    "windows",
+    "explorer",
+    "file"
   ],
   "main": "./out/extension.js",
   "scripts": {
@@ -48,7 +50,7 @@
     "commands": [
       {
         "command": "quicklook.previewFile",
-        "title": "Preview File with QuickLook",
+        "title": "Preview with QuickLook",
         "category": "QuickLook",
         "icon": "$(eye)"
       },
@@ -75,6 +77,13 @@
     ],
     "menus": {
       "explorer/context": [
+        {
+          "command": "quicklook.previewFile",
+          "when": "resourceScheme == file",
+          "group": "navigation@10"
+        }
+      ],
+      "editor/title": [
         {
           "command": "quicklook.previewFile",
           "when": "resourceScheme == file",

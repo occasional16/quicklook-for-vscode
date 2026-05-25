@@ -1,6 +1,6 @@
 # 4. Preview All-in-One Opportunity
 
-本文档记录对 `QuickLook Preview for VS Code` 的产品定位判断：它不应该只被理解为一个“从 VS Code 调起 QuickLook 的小工具”，而可以被包装为一个以 QuickLook 为底层能力的 Preview All-in-One 入口。
+本文档记录对 `Preview All-in-One with QuickLook` 的产品定位判断：它不应该只被理解为一个“从 VS Code 调起 QuickLook 的小工具”，而可以被包装为一个以 QuickLook 为底层能力的 Preview All-in-One 入口。
 
 ## 核心判断
 
@@ -93,7 +93,7 @@ Preview many local file types from VS Code through Windows QuickLook.
 长描述核心段落候选：
 
 ```text
-QuickLook Preview for VS Code turns the Explorer into a lightweight all-in-one preview entry point. Instead of installing a separate VS Code preview extension for every file format, select a local file and hand it to Windows QuickLook, including the file types and plugins supported by your local QuickLook setup.
+Preview All-in-One with QuickLook turns the Explorer into a lightweight all-in-one preview entry point. Instead of installing a separate VS Code preview extension for every file format, select a local file and hand it to Windows QuickLook, including the file types and plugins supported by your local QuickLook setup.
 ```
 
 关键词建议补充：

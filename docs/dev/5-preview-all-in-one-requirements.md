@@ -67,7 +67,7 @@ Preview All-in-One with QuickLook turns VS Code Explorer and editor tabs into a 
 Actual preview support depends on your local QuickLook installation and installed QuickLook plugins.
 ```
 
-README 中可以列出少量格式类别示例，并链接 QuickLook 官方资料，不维护一份过长且容易过期的完整格式清单：
+README 和 Marketplace 文案需要用表格突出 Preview All-in-One 覆盖面：列出主要格式类别和代表性扩展名，同时链接 QuickLook 官方资料，不维护一份过长且容易过期的完整格式清单：
 
 - QuickLook README：<https://github.com/QL-Win/QuickLook>
 - QuickLook supported formats：<https://github.com/QL-Win/QuickLook/blob/master/SUPPORTED_FORMATS.md>

@@ -1,20 +1,20 @@
 # 2. Release Process
 
-本文档记录将 `quicklook-for-vscode` 推送到 GitHub，并以 Marketplace 扩展 ID `occasional16.quicklook-preview-for-vscode` 发布到 Visual Studio Marketplace 的建议流程。
+本文档记录将 `quicklook-for-vscode` 推送到 GitHub，并以 Marketplace 扩展 ID `occasional16.preview-all-in-one-with-quicklook` 发布到 Visual Studio Marketplace 的建议流程。
 
 目标仓库：<https://github.com/occasional16/quicklook-for-vscode>
 
 ## 当前发布信息
 
-- Extension ID: `occasional16.quicklook-preview-for-vscode`
-- Display Name: `QuickLook Preview for VS Code`
-- Version: `0.1.0`
+- Extension ID: `occasional16.preview-all-in-one-with-quicklook`
+- Display Name: `Preview All-in-One with QuickLook`
+- Version: `0.1.1`
 - Publisher: `occasional16`
 - License: `AGPL-3.0-only`
 - Repository: <https://github.com/occasional16/quicklook-for-vscode>
-- VSIX: `quicklook-preview-for-vscode-0.1.0.vsix`
+- VSIX: `preview-all-in-one-with-quicklook-0.1.1.vsix`
 
-说明：`occasional16.quicklook-for-vscode` 曾经上传后被手动删除，Marketplace 仍保留该扩展 ID，重新上传会提示 `The extension 'quicklook-for-vscode' already exists in the Marketplace`。旧展示名 `QuickLook for VS Code` 也可能继续被软删除记录占用并触发 `This extension display name is taken`。当前发布包使用新的 `package.json` `name`：`quicklook-preview-for-vscode`，新的 `displayName`：`QuickLook Preview for VS Code`。GitHub 仓库名不需要修改。
+说明：`occasional16.quicklook-for-vscode` 曾经上传后被手动删除，Marketplace 仍保留该扩展 ID，重新上传会提示 `The extension 'quicklook-for-vscode' already exists in the Marketplace`。旧展示名 `QuickLook for VS Code` 也可能继续被软删除记录占用并触发 `This extension display name is taken`。当前发布包使用新的 `package.json` `name`：`preview-all-in-one-with-quicklook`，新的 `displayName`：`Preview All-in-One with QuickLook`。GitHub 仓库名暂不修改。
 
 ## 项目文件夹检查
 
@@ -39,6 +39,8 @@
 - [docs/dev/1-optimization-options.md](1-optimization-options.md)：优化路线。
 - [docs/dev/2-release-process.md](2-release-process.md)：本文档。
 - [docs/dev/3-marketplace-listing.md](3-marketplace-listing.md)：Marketplace 文案草稿。
+- [docs/dev/4-preview-all-in-one-opportunity.md](4-preview-all-in-one-opportunity.md)：Preview All-in-One 机会分析。
+- [docs/dev/5-preview-all-in-one-requirements.md](5-preview-all-in-one-requirements.md)：Preview All-in-One 实现需求。
 
 不建议提交或发布的内容：
 
@@ -67,7 +69,7 @@ npm run package
 - TypeScript 编译通过。
 - 单元测试全部通过。
 - 旧 VSIX 被自动清理。
-- 生成 `quicklook-preview-for-vscode-0.1.0.vsix`。
+- 生成 `preview-all-in-one-with-quicklook-0.1.1.vsix`。
 
 ## GitHub 发布流程
 
@@ -99,7 +101,7 @@ git remote set-url origin https://github.com/occasional16/quicklook-for-vscode.g
 
 ```powershell
 git add .
-git commit -m "Prepare 0.1.0 release"
+git commit -m "Prepare 0.1.1 release"
 ```
 
 4. 推送主分支。
@@ -112,19 +114,19 @@ git push -u origin main
 5. 创建版本 tag。
 
 ```powershell
-git tag v0.1.0
-git push origin v0.1.0
+git tag v0.1.1
+git push origin v0.1.1
 ```
 
-6. 在 GitHub Releases 中创建 `v0.1.0` release。
+6. 在 GitHub Releases 中创建 `v0.1.1` release。
 
 建议 Release 标题：
 
 ```text
-QuickLook Preview for VS Code 0.1.0
+Preview All-in-One with QuickLook 0.1.1
 ```
 
-建议 Release 内容直接引用 [CHANGELOG.md](../../CHANGELOG.md) 的 `0.1.0` 内容，并上传 `quicklook-preview-for-vscode-0.1.0.vsix`。
+建议 Release 内容直接引用 [CHANGELOG.md](../../CHANGELOG.md) 的 `0.1.1` 内容，并上传 `preview-all-in-one-with-quicklook-0.1.1.vsix`。
 
 ## Visual Studio Marketplace 发布流程
 
@@ -148,7 +150,7 @@ QuickLook Preview for VS Code 0.1.0
 3. 点击右上角用户头像。
 4. 进入 `Personal access tokens`。
 5. 点击 `New Token`。
-6. Name 建议填写：`vsce-publish-quicklook-preview-for-vscode`。
+6. Name 建议填写：`vsce-publish-preview-all-in-one-with-quicklook`。
 7. Organization 选择用于 Marketplace Publisher 的 organization。
 8. Expiration 选择一个较短周期，例如 30 或 90 天。
 9. Scopes 选择 `Custom defined`。
@@ -181,7 +183,7 @@ npm run package
 确认生成：
 
 ```text
-quicklook-preview-for-vscode-0.1.0.vsix
+preview-all-in-one-with-quicklook-0.1.1.vsix
 ```
 
 ### 发布到 Marketplace
@@ -195,7 +197,7 @@ npx vsce publish
 或者发布已生成的 VSIX：
 
 ```powershell
-npx vsce publish --packagePath quicklook-preview-for-vscode-0.1.0.vsix
+npx vsce publish --packagePath preview-all-in-one-with-quicklook-0.1.1.vsix
 ```
 
 发布后检查：
@@ -204,7 +206,8 @@ npx vsce publish --packagePath quicklook-preview-for-vscode-0.1.0.vsix
 - License 是否显示 AGPL-3.0-only。
 - 默认快捷键是否展示正确。
 - 安装后命令是否可搜索。
-- `QuickLook: Preview File` 是否能预览文件。
+- `QuickLook: Preview with QuickLook` 是否能预览文件。
+- 编辑器标题右侧预览按钮是否能预览当前本地文件。
 - `QuickLook: Check QuickLook Installation` 是否能正常运行。
 - `QuickLook: Set QuickLook Executable Path` 是否能正常设置路径。
 
@@ -222,5 +225,5 @@ npx vsce publish --packagePath quicklook-preview-for-vscode-0.1.0.vsix
 
 ## 当前等待事项
 
-- 等待你安装并测试 `quicklook-preview-for-vscode-0.1.0.vsix`。
+- 等待你安装并测试 `preview-all-in-one-with-quicklook-0.1.1.vsix`。
 - 等待你在本机终端执行 `npx vsce login occasional16` 并输入 PAT。

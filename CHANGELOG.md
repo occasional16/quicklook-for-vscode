@@ -2,12 +2,26 @@
 
 All notable changes to this project are documented in this file.
 
+## 0.1.1 - 2026-05-25
+
+### Changed
+
+- Renamed the extension to `Preview All-in-One with QuickLook`.
+- Renamed the package to `preview-all-in-one-with-quicklook`.
+- Updated English and Chinese README content to highlight Preview All-in-One coverage through QuickLook-supported file categories.
+- Updated Marketplace and release documentation for the new extension ID and VSIX name.
+
+### Added
+
+- Added an editor title button for previewing the active local file with QuickLook.
+- Added `QuickLook: Preview with QuickLook` as the command display title.
+
 ## 0.1.0 - 2026-05-20
 
 ### Added
 
 - Added `QuickLook: Preview File` for previewing selected local files with Windows QuickLook.
-- Added Explorer, editor context, editor title, and Command Palette entry points.
+- Added Explorer, editor context, editor title context, and Command Palette entry points.
 - Added the default Explorer keybinding `` ` ``.
 - Added `QuickLook: Check QuickLook Installation`.
 - Added `QuickLook: Set QuickLook Executable Path`.
