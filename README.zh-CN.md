@@ -6,15 +6,10 @@
 
 ## 功能
 
-- 使用 QuickLook 原生窗口预览选中或当前打开的本地文件。
-- 支持编辑器标题右侧按钮，一键预览当前本地文件或 Git 历史文件。
-- 默认在资源管理器或当前编辑器中按 ``Alt+` `` 快速预览。
-- 支持资源管理器右键菜单、Source Control 变更列表、编辑器右键菜单、编辑器标题菜单、Search Results 打开文件后预览、SCM Graph / History 打开文件后预览，以及命令面板。
-- 使用 `QuickLook: Check QuickLook Installation` 检查 QuickLook 安装状态。
-- 使用 `QuickLook: Set QuickLook Executable Path` 配置 QuickLook 可执行文件路径。
-- 支持自动探测路径、浏览选择 `QuickLook.exe`、手动输入路径。
-- 支持 QuickLook 官方命令行参数，例如 `/pin` 和 `/top`。
-- 支持 `QuickLook` 输出通道日志，便于排查启动问题。
+- 按 ``Alt+` `` 或点击编辑器标题按钮，即可即时预览当前聚焦的文件。
+- 支持资源管理器、编辑器标签、Source Control、Search Results、SCM History 和命令面板。
+- 可预览 PDF、Office、图片、视频、音频、字体、压缩包、设计稿等多种格式——由本机 QuickLook 驱动。
+- 通过命令面板或设置配置可执行文件路径和选项（`/pin`、`/top`）。
 
 ## Preview All-in-One 覆盖面
 

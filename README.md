@@ -6,15 +6,10 @@ Preview many local file types from VS Code through the Windows [QuickLook](https
 
 ## Features
 
-- Preview selected local files in the native Windows QuickLook preview window.
-- Use the editor title button to preview the active local file or Git history file without leaving the editor.
-- Use ``Alt+` `` from Explorer or an active editor to preview quickly.
-- Run from Explorer context menus, Source Control changes, editor context menus, editor title menus, Search Results after opening a file, SCM Graph / History after opening a file, and the Command Palette.
-- Check your QuickLook setup with `QuickLook: Check QuickLook Installation`.
-- Configure the QuickLook executable with `QuickLook: Set QuickLook Executable Path`.
-- Choose a detected QuickLook path, browse for `QuickLook.exe`, or enter a path manually.
-- Pass official QuickLook command line options such as `/pin` and `/top`.
-- Inspect troubleshooting details in the `QuickLook` output channel.
+- Press ``Alt+` `` or click the editor title button to preview the focused file instantly.
+- Works from Explorer, editor tabs, Source Control, Search Results, SCM History, and the Command Palette.
+- Previews pdf, office, image, video, audio, font, archive, design files, and more — powered by your local QuickLook.
+- Configure the executable path and options (`/pin`, `/top`) from the Command Palette or settings.
 
 ## Preview All-in-One Coverage
 
