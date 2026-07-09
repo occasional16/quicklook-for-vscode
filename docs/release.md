@@ -74,7 +74,7 @@
    gh release create v<version> preview-all-in-one-with-quicklook-<version>.vsix --title "Release v<version>" --notes-file <notes-file>
    ```
 
-   *注：如果不使用 `--notes-file`，也可以使用 `-n "notes content"` 传入日志内容，或者在发布后直接在 GitHub 页面上复制 CHANGELOG 的对应内容。*
+   *注：为了保持项目文档的双语一致性，Release Notes 建议使用中英对照排版（英文在上，中文在下，中间使用 `---` 分割线隔开）。如果不使用 `--notes-file`，使用 `-n "notes content"` 传参或在网页端直接编辑时，也请遵循该对照排版。*
 
 ## Marketplace 发布
 
