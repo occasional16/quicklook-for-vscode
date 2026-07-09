@@ -2,6 +2,11 @@
 
 Preview many local file types from VS Code through the Windows [QuickLook](https://github.com/QL-Win/QuickLook) app.
 
+[![Visual Studio Marketplace Version](https://badgen.net/vs-marketplace/v/occasional16.preview-all-in-one-with-quicklook)](https://marketplace.visualstudio.com/items?itemName=occasional16.preview-all-in-one-with-quicklook)
+[![Visual Studio Marketplace Installs](https://badgen.net/vs-marketplace/i/occasional16.preview-all-in-one-with-quicklook)](https://marketplace.visualstudio.com/items?itemName=occasional16.preview-all-in-one-with-quicklook)
+[![Visual Studio Marketplace Rating](https://badgen.net/vs-marketplace/rating/occasional16.preview-all-in-one-with-quicklook)](https://marketplace.visualstudio.com/items?itemName=occasional16.preview-all-in-one-with-quicklook)
+[![GitHub License](https://img.shields.io/github/license/occasional16/quicklook-for-vscode?logo=github)](https://github.com/occasional16/quicklook-for-vscode/blob/main/LICENSE.txt)
+
 > 中文文档：[README.zh-CN.md](README.zh-CN.md)
 
 ## Features

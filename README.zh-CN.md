@@ -2,6 +2,11 @@
 
 这个扩展把 Windows [QuickLook](https://github.com/QL-Win/QuickLook) 接入 VS Code，让你通过 QuickLook 原生预览窗口快速预览多种本地文件类型。
 
+[![Visual Studio Marketplace Version](https://badgen.net/vs-marketplace/v/occasional16.preview-all-in-one-with-quicklook)](https://marketplace.visualstudio.com/items?itemName=occasional16.preview-all-in-one-with-quicklook)
+[![Visual Studio Marketplace Installs](https://badgen.net/vs-marketplace/i/occasional16.preview-all-in-one-with-quicklook)](https://marketplace.visualstudio.com/items?itemName=occasional16.preview-all-in-one-with-quicklook)
+[![Visual Studio Marketplace Rating](https://badgen.net/vs-marketplace/rating/occasional16.preview-all-in-one-with-quicklook)](https://marketplace.visualstudio.com/items?itemName=occasional16.preview-all-in-one-with-quicklook)
+[![GitHub License](https://img.shields.io/github/license/occasional16/quicklook-for-vscode?logo=github)](https://github.com/occasional16/quicklook-for-vscode/blob/main/LICENSE.txt)
+
 英文主文档：[README.md](README.md)
 
 ## 功能
