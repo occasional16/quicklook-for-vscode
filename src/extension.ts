@@ -1,5 +1,6 @@
 import * as path from 'path';
 import * as vscode from 'vscode';
+import { activateMarkdownDualPane } from './markdownDualPane';
 import {
   QuickLookExecutableResolution,
   QuickLookLaunchSettings,
@@ -57,6 +58,8 @@ export function activate(context: vscode.ExtensionContext): void {
       await setExecutablePath();
     })
   );
+
+  activateMarkdownDualPane(context, log);
 }
 
 export async function deactivate(): Promise<void> {
