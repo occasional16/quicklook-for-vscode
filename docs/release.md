@@ -74,7 +74,7 @@
    gh release create v<version> preview-all-in-one-with-quicklook-<version>.vsix --title "Release v<version>" --notes-file <notes-file>
    ```
 
-   *注：为了保持项目文档的双语一致性，Release Notes 建议使用中英对照排版（英文在上，中文在下，中间使用 `---` 分割线隔开）。如果不使用 `--notes-file`，使用 `-n "notes content"` 传参或在网页端直接编辑时，也请遵循该对照排版。*
+   *注：为了保持项目文档的双语一致性，Release Notes 建议使用中英文的标准化分类标题（例如：英文使用 `### Added` / `### Changed` / `### Improved`，中文相应使用 `### 新增` / `### 变更` / `### 改进`），依次排列英文和中文内容。请避免使用像“### English / ### 中文”这种无意义的语言标题。*
 
 ## Marketplace 发布
 
