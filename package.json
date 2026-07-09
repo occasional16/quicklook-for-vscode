@@ -2,13 +2,16 @@
   "name": "preview-all-in-one-with-quicklook",
   "displayName": "Preview All-in-One with QuickLook",
   "description": "Preview many local file types from VS Code through Windows QuickLook.",
-  "version": "0.1.3",
+  "version": "0.2.0",
   "publisher": "occasional16",
   "license": "AGPL-3.0-only",
   "icon": "assets/icon.png",
   "engines": {
     "vscode": "^1.91.0"
   },
+  "activationEvents": [
+    "onLanguage:markdown"
+  ],
   "categories": [
     "Visualization"
   ],
@@ -170,6 +173,11 @@
           "type": "boolean",
           "default": true,
           "markdownDescription": "Use VS Code's Copy Path command to resolve the focused Explorer selection when a keybinding does not provide a resource URI. The previous clipboard text is restored immediately."
+        },
+        "quicklook.markdownDualPane": {
+          "type": "boolean",
+          "default": true,
+          "markdownDescription": "When opening a Markdown file, automatically arrange a two-panel layout with the source editor on the left and the built-in Markdown preview on the right. Ensures the editor area has exactly two panels."
         }
       }
     }

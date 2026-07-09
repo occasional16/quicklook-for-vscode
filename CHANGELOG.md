@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented in this file.
 
+## 0.2.0 - 2026-07-09
+
+### Added
+
+- Markdown dual pane: opening a `.md` file automatically arranges a two-panel layout with the source editor on the left and the built-in Markdown preview on the right. Extra editor groups are collapsed to keep exactly two panels. Enabled by default; disable with `quicklook.markdownDualPane`.
+
 ## 0.1.3 - 2026-05-27
 
 ### Changed

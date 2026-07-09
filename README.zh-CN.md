@@ -10,6 +10,13 @@
 - 支持资源管理器、编辑器标签、Source Control、Search Results、SCM History 和命令面板。
 - 可预览 PDF、Office、图片、视频、音频、字体、压缩包、设计稿等多种格式——由本机 QuickLook 驱动。
 - 通过命令面板或设置配置可执行文件路径和选项（`/pin`、`/top`）。
+- **Markdown 双面板**：打开 `.md` 文件时自动将编辑器分为左侧源文件面板和右侧实时预览面板，始终保持恰好两个面板。默认启用。
+
+## 最新动态 (v0.2.0)
+
+- **Markdown 双面板**：打开 `.md` 文件时自动将编辑器排列为左右两个面板：左侧为源文件编辑器，右侧为内置 Markdown 预览。多余的编辑器组会被自动合并。默认启用（可通过配置 `quicklook.markdownDualPane` 关闭）。
+
+完整更新历史请参阅 [CHANGELOG.md](CHANGELOG.md)。
 
 ## Preview All-in-One 覆盖面
 
@@ -70,7 +77,8 @@ QuickLook 官方仓库：<https://github.com/QL-Win/QuickLook>
 {
   "quicklook.executablePath": "D:\\Program Files\\QuickLook\\QuickLook.exe",
   "quicklook.previewOptions": [],
-  "quicklook.useExplorerClipboardFallback": true
+  "quicklook.useExplorerClipboardFallback": true,
+  "quicklook.markdownDualPane": true
 }
 ```
 
@@ -91,6 +99,8 @@ D:\Program Files\QuickLook\QuickLook.exe
 ```
 
 `quicklook.useExplorerClipboardFallback` 用于支持资源管理器焦点下的快捷键预览。VS Code 稳定 API 不直接暴露资源管理器当前选中项，因此扩展会临时调用 VS Code 的 Copy Path 命令读取选中路径，并立即恢复原剪贴板文本。
+
+`quicklook.markdownDualPane` 控制 Markdown 双面板功能。打开 `.md` 文件时，扩展自动将编辑器排列为两个面板：左侧源文件编辑器，右侧内置 Markdown 预览。多余的编辑器组会被合并，始终保持恰好两个面板。如果你希望手动管理 Markdown 预览布局，可以关闭此设置。
 
 ## 故障排查
 

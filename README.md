@@ -10,6 +10,13 @@ Preview many local file types from VS Code through the Windows [QuickLook](https
 - Works from Explorer, editor tabs, Source Control, Search Results, SCM History, and the Command Palette.
 - Previews pdf, office, image, video, audio, font, archive, design files, and more — powered by your local QuickLook.
 - Configure the executable path and options (`/pin`, `/top`) from the Command Palette or settings.
+- **Markdown dual pane**: opening a `.md` file automatically splits the editor into a source panel (left) and a live preview panel (right), keeping exactly two panels. Enabled by default.
+
+## What's New in v0.2.0
+
+- **Markdown dual pane**: opening a `.md` file automatically arranges a two-panel layout with the source editor on the left and the built-in Markdown preview on the right. Extra editor groups are collapsed to keep exactly two panels. Enabled by default (can be disabled with `quicklook.markdownDualPane`).
+
+For the full release history, see [CHANGELOG.md](CHANGELOG.md).
 
 ## Preview All-in-One Coverage
 
@@ -70,7 +77,8 @@ The default ``Alt+` `` keybinding is scoped to Explorer and active local or Git 
 {
   "quicklook.executablePath": "D:\\Program Files\\QuickLook\\QuickLook.exe",
   "quicklook.previewOptions": [],
-  "quicklook.useExplorerClipboardFallback": true
+  "quicklook.useExplorerClipboardFallback": true,
+  "quicklook.markdownDualPane": true
 }
 ```
 
@@ -105,6 +113,12 @@ When a keybinding is triggered from Explorer, VS Code's stable API does not dire
 
 Disable this setting if you do not want the extension to use that fallback.
 
+### `quicklook.markdownDualPane`
+
+When you open a Markdown file, the extension automatically arranges a two-panel layout: the source editor on the left and the built-in Markdown preview on the right. Extra editor groups are collapsed to keep exactly two panels.
+
+Disable this setting if you prefer to manage Markdown preview layout manually.
+
 ## Troubleshooting
 
 1. Run `QuickLook: Check QuickLook Installation`.
@@ -124,10 +138,6 @@ npm run package
 `npm run package` cleans old VSIX files before producing the latest package.
 
 Press `F5` in VS Code to launch an Extension Development Host.
-
-## Release Notes
-
-See [CHANGELOG.md](CHANGELOG.md).
 
 ## Publishing
 
