@@ -12,43 +12,69 @@
 - Repository: <https://github.com/occasional16/quicklook-for-vscode>
 - VSIX pattern: `preview-all-in-one-with-quicklook-<version>.vsix`
 
-## 发布前检查
+## 发布流程与职责分离最佳实践
 
-1. 更新 [CHANGELOG.md](../CHANGELOG.md)。
-2. 更新 [package.json](../package.json) 的 `version`。
-3. 同步 [package-lock.json](../package-lock.json)。
-4. 运行验证：
+为了保持 Git 提交历史的可读性与维护性，项目遵循以下**职责分离**原则：
 
-```powershell
-npm test
-npm run package
-```
+1. **开发阶段 (Feature Commits)**：
+   - 所有的功能开发、Bug 修复代码及对应的**阶段性开发设计文档**（如 `docs/dev/` 下的临时文档）应合并在对应的功能提交中（例如 `feat: ...` 或 `fix: ...`）。
+   - **优势**：此时设计文档被写入 Git 历史。即使后续在发布时被删除，未来任何人也可以通过该 feature commit 追溯并查看完整的设计文档。
+2. **发布准备阶段 (Release Commit)**：
+   - 创建一个专门的提交，其 Message 采用行业标准的 **`chore(release): v<version>`**（例如 `chore(release): v0.2.0`）。
+   - 该提交**只包含**以下发布杂务：
+     - 删除已验收的阶段性开发文档（例如 `docs/dev/*`）。
+     - 更新 `package.json` 中的 `version`。
+     - 同步 `package-lock.json`。
+     - 整理并更新 `CHANGELOG.md`。
+   - **优势**：符合 Conventional Commits 规范，确保功能代码的 commit 非常纯粹，不混入版本元数据和日志变动，便于未来进行 Cherry-pick（樱桃挑选）或回滚。
 
-预期结果：
+---
 
-- TypeScript 编译通过。
-- 单元测试全部通过。
-- 旧 VSIX 被自动清理。
-- 生成 `preview-all-in-one-with-quicklook-<version>.vsix`。
+## 详细发布步骤
 
-## GitHub 发布
+### 1. 发布前准备与检查
 
-```powershell
-git status --short
-git add .
-git commit -m "Prepare <version> release"
-git push origin main
-git tag v<version>
-git push origin v<version>
-```
+在确认功能开发完毕，且设计文档已就绪并提交后，开始进行发布准备：
 
-创建 GitHub Release：
+1. **删除开发文档**：删除 `docs/dev/` 下已验收的阶段性设计文档。
+2. **更新版本号**：修改 `package.json` 中的 `version` 为新版本号（例如 `0.2.0`）。
+3. **更新 CHANGELOG**：在 `CHANGELOG.md` 中为新版本添加一条记录，写明更新日期和变更内容。
+4. **验证构建**：在根目录下运行以下命令，确保测试通过且打包成功：
 
-```powershell
-gh release create v<version> preview-all-in-one-with-quicklook-<version>.vsix --title "Preview All-in-One with QuickLook <version>" --notes-file <notes-file>
-```
+   ```powershell
+   npm install --package-lock-only  # 同步 lock 文件
+   npm test                        # 运行单元测试
+   npm run package                 # 清理并重新打包 VSIX 资产
+   ```
 
-如果不使用 `--notes-file`，可以直接在 GitHub Release 页面复制 [CHANGELOG.md](../CHANGELOG.md) 对应版本内容。
+### 2. GitHub 发布
+
+1. **提交发布准备**：
+   将版本号更新、CHANGELOG 整理和开发文档的删除一并进行提交：
+
+   ```powershell
+   git status --short
+   git add .
+   git commit -m "chore(release): v<version>"
+   ```
+
+2. **推送与打标签**：
+   将发布 commit 推送至主分支，并在该 commit 上创建对应版本的 Git Tag：
+
+   ```powershell
+   git push origin main
+   git tag v<version>
+   git push origin v<version>
+   ```
+
+3. **创建 GitHub Release**：
+   使用 GitHub CLI 创建 Release 并上传生成的 `.vsix` 文件作为发布资产：
+
+   ```powershell
+   gh release create v<version> preview-all-in-one-with-quicklook-<version>.vsix --title "Preview All-in-One with QuickLook <version>" --notes-file <notes-file>
+   ```
+
+   *注：如果不使用 `--notes-file`，也可以使用 `-n "notes content"` 传入日志内容，或者在发布后直接在 GitHub 页面上复制 CHANGELOG 的对应内容。*
 
 ## Marketplace 发布
 
