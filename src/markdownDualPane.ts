@@ -4,6 +4,7 @@ const markdownPreviewViewType = 'vscode.markdown.preview.editor';
 const configSection = 'quicklook';
 const configKey = 'markdownDualPane';
 const arrangeDebounceMs = 50;
+const supportedSchemes = ['file', 'git', 'gitlens', 'vscode-local-history', 'review'];
 
 let isArranging = false;
 let arrangeTimer: ReturnType<typeof setTimeout> | undefined;
@@ -42,7 +43,8 @@ function isEnabled(): boolean {
 }
 
 function isMarkdownFile(editor: vscode.TextEditor): boolean {
-  return editor.document.languageId === 'markdown' && editor.document.uri.scheme === 'file';
+  return editor.document.languageId === 'markdown'
+    && supportedSchemes.includes(editor.document.uri.scheme);
 }
 
 async function tryArrangeLayout(uri: vscode.Uri): Promise<void> {
@@ -65,7 +67,7 @@ async function arrangeMarkdownLayout(uri: vscode.Uri): Promise<void> {
     return;
   }
 
-  log(`Arranging dual pane layout for: ${uri.fsPath}`);
+  log(`Arranging dual pane layout for: ${uri.fsPath || uri.toString()}`);
 
   // Close existing preview for this file if it is in the wrong group.
   const existingPreview = findPreviewTab(uri);
@@ -73,11 +75,16 @@ async function arrangeMarkdownLayout(uri: vscode.Uri): Promise<void> {
     await vscode.window.tabGroups.close(existingPreview.tab);
   }
 
-  // Open (or activate) the source file in Group 1 (left).
-  await vscode.window.showTextDocument(uri, {
-    viewColumn: vscode.ViewColumn.One,
-    preserveFocus: false
-  });
+  const groups = vscode.window.tabGroups.all;
+  const group1 = groups.find(g => g.viewColumn === vscode.ViewColumn.One);
+
+  // Open (or activate) the source file in Group 1 (left) only if it's not already active there.
+  if (!group1 || !isSourceTab(group1.activeTab, uri)) {
+    await vscode.window.showTextDocument(uri, {
+      viewColumn: vscode.ViewColumn.One,
+      preserveFocus: false
+    });
+  }
 
   // Open the preview in Group 2 (right) unless it is already there.
   if (!findPreviewInGroup(uri, vscode.ViewColumn.Two)) {
@@ -92,11 +99,14 @@ async function arrangeMarkdownLayout(uri: vscode.Uri): Promise<void> {
   // Remove editor groups beyond Group 1 and Group 2.
   await closeExtraGroups();
 
-  // Restore keyboard focus to the source editor in Group 1.
-  await vscode.window.showTextDocument(uri, {
-    viewColumn: vscode.ViewColumn.One,
-    preserveFocus: false
-  });
+  // Restore keyboard focus to the source editor in Group 1, only if it's not active.
+  const finalGroup1 = vscode.window.tabGroups.all.find(g => g.viewColumn === vscode.ViewColumn.One);
+  if (finalGroup1 && !isSourceTab(finalGroup1.activeTab, uri)) {
+    await vscode.window.showTextDocument(uri, {
+      viewColumn: vscode.ViewColumn.One,
+      preserveFocus: false
+    });
+  }
 }
 
 function isLayoutAlreadyCorrect(uri: vscode.Uri): boolean {
@@ -113,9 +123,7 @@ function isLayoutAlreadyCorrect(uri: vscode.Uri): boolean {
     return false;
   }
 
-  const sourceActiveInGroup1 =
-    group1.activeTab?.input instanceof vscode.TabInputText
-    && group1.activeTab.input.uri.toString() === uriString;
+  const sourceActiveInGroup1 = isSourceTab(group1.activeTab, uri);
 
   const previewInGroup2 = group2.tabs.some(tab =>
     tab.input instanceof vscode.TabInputCustom
@@ -124,6 +132,20 @@ function isLayoutAlreadyCorrect(uri: vscode.Uri): boolean {
   );
 
   return sourceActiveInGroup1 && previewInGroup2;
+}
+
+function isSourceTab(tab: vscode.Tab | undefined, uri: vscode.Uri): boolean {
+  if (!tab) {
+    return false;
+  }
+  const uriString = uri.toString();
+  if (tab.input instanceof vscode.TabInputText) {
+    return tab.input.uri.toString() === uriString;
+  }
+  if (tab.input instanceof vscode.TabInputTextDiff) {
+    return tab.input.modified.toString() === uriString;
+  }
+  return false;
 }
 
 function findPreviewTab(uri: vscode.Uri): { tab: vscode.Tab; group: vscode.TabGroup } | undefined {
