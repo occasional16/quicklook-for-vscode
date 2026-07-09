@@ -2,6 +2,12 @@
 
 All notable changes to this project are documented in this file.
 
+## 0.2.1 - 2026-07-09
+
+### Improved
+
+- Markdown dual pane SCM support: added compatibility for virtual documents (using `git`, `gitlens`, `vscode-local-history`, `review` schemes) and Diff Editors (`TabInputTextDiff`). Opening modified, added, untracked, or historical Markdown files from the SCM panel or Git graph now triggers the dual-pane layout correctly without disrupting the diff view.
+
 ## 0.2.0 - 2026-07-09
 
 ### Added
