@@ -71,7 +71,7 @@
    使用 GitHub CLI 创建 Release 并上传生成的 `.vsix` 文件作为发布资产：
 
    ```powershell
-   gh release create v<version> preview-all-in-one-with-quicklook-<version>.vsix --title "Preview All-in-One with QuickLook <version>" --notes-file <notes-file>
+   gh release create v<version> preview-all-in-one-with-quicklook-<version>.vsix --title "Release v<version>" --notes-file <notes-file>
    ```
 
    *注：如果不使用 `--notes-file`，也可以使用 `-n "notes content"` 传入日志内容，或者在发布后直接在 GitHub 页面上复制 CHANGELOG 的对应内容。*
