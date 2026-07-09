@@ -2,7 +2,7 @@
   "name": "preview-all-in-one-with-quicklook",
   "displayName": "Preview All-in-One with QuickLook",
   "description": "Preview many local file types from VS Code through Windows QuickLook.",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "publisher": "occasional16",
   "license": "AGPL-3.0-only",
   "icon": "assets/icon.png",

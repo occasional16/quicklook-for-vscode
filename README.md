@@ -17,8 +17,9 @@ Preview many local file types from VS Code through the Windows [QuickLook](https
 - Configure the executable path and options (`/pin`, `/top`) from the Command Palette or settings.
 - **Markdown dual pane**: opening a `.md` file automatically splits the editor into a source panel (left) and a live preview panel (right), keeping exactly two panels. Enabled by default.
 
-## What's New in v0.2.1
+## What's New in v0.2.2
 
+- **Focus preservation**: Enabled `preserveFocus: true` when arranging the source file and Markdown preview tabs. This prevents keyboard focus from being stolen from Explorer or SCM views, allowing seamless keyboard navigation (arrow keys, Delete) and editing.
 - **SCM & Git History support**: Opening modified, added, untracked, or historical Markdown files from the SCM panel or Git graph now triggers the dual-pane layout correctly without disrupting the diff view.
 - **Markdown dual pane**: Opening a `.md` file automatically arranges a two-panel layout with the source editor on the left and the built-in Markdown preview on the right. Extra editor groups are collapsed to keep exactly two panels. Enabled by default (can be disabled with `quicklook.markdownDualPane`).
 

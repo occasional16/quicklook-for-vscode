@@ -2,6 +2,16 @@
 
 All notable changes to this project are documented in this file.
 
+## 0.2.2 - 2026-07-09
+
+### Improved
+
+- Focus preservation: enabled `preserveFocus: true` when arranging the source file and Markdown preview tabs. This prevents keyboard focus from being stolen from Explorer or SCM views, allowing seamless keyboard navigation (arrow keys, Delete) and editing.
+
+### 改进
+
+- 优化焦点保持：在排列源文件和 Markdown 预览 Tab 时启用了 `preserveFocus: true`，防止键盘焦点从资源管理器（Explorer）或 SCM 面板中被强行夺走，确保了键盘导航（方向键切换、按 `Delete` 删除）与编辑操作的流畅性。
+
 ## 0.2.1 - 2026-07-09
 
 ### Improved
