@@ -82,7 +82,7 @@ async function arrangeMarkdownLayout(uri: vscode.Uri): Promise<void> {
   if (!group1 || !isSourceTab(group1.activeTab, uri)) {
     await vscode.window.showTextDocument(uri, {
       viewColumn: vscode.ViewColumn.One,
-      preserveFocus: false
+      preserveFocus: true
     });
   }
 
@@ -92,21 +92,16 @@ async function arrangeMarkdownLayout(uri: vscode.Uri): Promise<void> {
       'vscode.openWith',
       uri,
       markdownPreviewViewType,
-      { viewColumn: vscode.ViewColumn.Two, preview: true }
+      { 
+        viewColumn: vscode.ViewColumn.Two, 
+        preview: true,
+        preserveFocus: true
+      }
     );
   }
 
   // Remove editor groups beyond Group 1 and Group 2.
   await closeExtraGroups();
-
-  // Restore keyboard focus to the source editor in Group 1, only if it's not active.
-  const finalGroup1 = vscode.window.tabGroups.all.find(g => g.viewColumn === vscode.ViewColumn.One);
-  if (finalGroup1 && !isSourceTab(finalGroup1.activeTab, uri)) {
-    await vscode.window.showTextDocument(uri, {
-      viewColumn: vscode.ViewColumn.One,
-      preserveFocus: false
-    });
-  }
 }
 
 function isLayoutAlreadyCorrect(uri: vscode.Uri): boolean {
