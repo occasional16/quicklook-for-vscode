@@ -2,6 +2,24 @@
 
 All notable changes to this project are documented in this file.
 
+## 0.2.3 - 2026-07-10
+
+### Added
+
+- New Extension Icon: Redesigned the extension icon with a modern, minimalist fluid gradient logo.
+
+### Improved
+
+- Markdown active group sync: Refactored the layout logic to keep Group 1 as the active group and restore the sidebar focus dynamically, eliminating the right-pane flashing issue when clicking files in the explorer/SCM without locking the editor group.
+
+### 新增
+
+- 全新插件图标：重新设计了更加美观现代的极简流光渐变插件图标。
+
+### 改进
+
+- Markdown 活跃组同步：重构了布局聚焦逻辑，在重排后强制重置 Group 1 为活跃组并在单次点击时无缝还原侧边栏焦点，在不锁定编辑器组的前提下消除了在 Explorer/SCM 单击 Markdown 文件导致的右侧闪现问题。
+
 ## 0.2.2 - 2026-07-09
 
 ### Improved
