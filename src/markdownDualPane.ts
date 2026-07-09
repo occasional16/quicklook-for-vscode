@@ -102,6 +102,36 @@ async function arrangeMarkdownLayout(uri: vscode.Uri): Promise<void> {
 
   // Remove editor groups beyond Group 1 and Group 2.
   await closeExtraGroups();
+
+  // Restore Group 1 as the active editor group.
+  const finalGroups = vscode.window.tabGroups.all;
+  const finalGroup1 = finalGroups.find(g => g.viewColumn === vscode.ViewColumn.One);
+  if (finalGroup1 && finalGroup1.activeTab) {
+    const tab = finalGroup1.activeTab;
+    const isPreview = tab.isPreview;
+
+    if (tab.input instanceof vscode.TabInputTextDiff) {
+      await vscode.commands.executeCommand(
+        'vscode.diff',
+        tab.input.original,
+        tab.input.modified,
+        tab.label,
+        {
+          viewColumn: vscode.ViewColumn.One,
+          preserveFocus: false
+        }
+      );
+    } else {
+      await vscode.window.showTextDocument(uri, {
+        viewColumn: vscode.ViewColumn.One,
+        preserveFocus: false
+      });
+    }
+
+    if (isPreview) {
+      await vscode.commands.executeCommand('workbench.action.focusSideBar');
+    }
+  }
 }
 
 function isLayoutAlreadyCorrect(uri: vscode.Uri): boolean {

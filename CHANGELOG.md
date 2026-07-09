@@ -18,11 +18,19 @@ All notable changes to this project are documented in this file.
 
 - Markdown dual pane SCM support: added compatibility for virtual documents (using `git`, `gitlens`, `vscode-local-history`, `review` schemes) and Diff Editors (`TabInputTextDiff`). Opening modified, added, untracked, or historical Markdown files from the SCM panel or Git graph now triggers the dual-pane layout correctly without disrupting the diff view.
 
+### 改进
+
+- 支持 SCM 面板中 Markdown 双面板排版：增加了对虚拟文档（使用 `git`、`gitlens`、`vscode-local-history`、`review` 等 Scheme）以及 Diff 编辑器 (`TabInputTextDiff`) 的兼容。现在，从 SCM 面板或 Git Graph 中打开已修改、已添加、未跟踪或历史版本的 Markdown 文件能够正确触发双面板布局，且不会破坏或冲掉 Diff 对比视图。
+
 ## 0.2.0 - 2026-07-09
 
 ### Added
 
 - Markdown dual pane: opening a `.md` file automatically arranges a two-panel layout with the source editor on the left and the built-in Markdown preview on the right. Extra editor groups are collapsed to keep exactly two panels. Enabled by default; disable with `quicklook.markdownDualPane`.
+
+### 新增
+
+- Markdown 智能双面板：打开 `.md` 文件时自动安排左右双面板布局（左侧为源码编辑器，右侧为内置 Markdown 预览）。额外分出的编辑器组将被自动合并折叠，以保持严格的双面板格局。默认开启，可通过设置 `quicklook.markdownDualPane` 禁用。
 
 ## 0.1.3 - 2026-05-27
 
@@ -31,6 +39,12 @@ All notable changes to this project are documented in this file.
 - Updated Marketplace keywords to better reflect supported file types.
 - Updated `categories` to `Visualization` for better Marketplace discoverability.
 - Simplified README features section and changelog entries.
+
+### 变更
+
+- 更新了 Marketplace 关键字以更好地反映支持的文件类型。
+- 将 `categories` 更新为 `Visualization` 以提高 Marketplace 中的可发现性。
+- 简化了 README 功能介绍和变更日志。
 
 ## 0.1.2 - 2026-05-26
 
@@ -43,6 +57,15 @@ All notable changes to this project are documented in this file.
 - Source Control context menu entry for previewing changed files.
 - Editor title button preview for Git history files.
 
+### 变更
+
+- 将默认快捷键从 `Space` 改为 ``Alt+` ``。
+
+### 新增
+
+- 源代码管理（SCM）右键菜单中增加了预览变更文件的入口。
+- 针对 Git 历史文件的编辑器标题栏增加预览按钮。
+
 ## 0.1.1 - 2026-05-25
 
 ### Changed
@@ -53,6 +76,14 @@ All notable changes to this project are documented in this file.
 
 - Editor title button for previewing the active file.
 
+### 变更
+
+- 插件重命名为 `Preview All-in-One with QuickLook`。
+
+### 新增
+
+- 编辑器标题栏增加用于预览活动文件的按钮。
+
 ## 0.1.0 - 2026-05-20
 
 ### Added
@@ -61,3 +92,10 @@ All notable changes to this project are documented in this file.
 - QuickLook executable detection and path configuration.
 - English and Chinese README.
 - Licensed under AGPL-3.0-only.
+
+### 新增
+
+- 首发版本，包含资源管理器、编辑器、和命令面板等预览触发入口。
+- QuickLook 可执行文件路径自动检测与自定义配置。
+- 英文和中文双语 README。
+- 开源协议采用 AGPL-3.0-only。
