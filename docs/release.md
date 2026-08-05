@@ -1,112 +1,75 @@
 # Release Guide
 
-本文档记录 `Preview All-in-One with QuickLook` 的最小发布流程。项目是个人小型 VS Code 扩展，发布文档只保留可复用步骤；阶段性需求和历史开发记录不长期维护。
+`Preview All-in-One with QuickLook` 的最小发布流程。用户能力写入 README，版本变化写入中英对照 CHANGELOG；阶段性开发文档在 Git 留档后于发布前清理。
 
-## 当前发布信息
+## 发布信息
 
-- Extension ID: `occasional16.preview-all-in-one-with-quicklook`
-- Display Name: `Preview All-in-One with QuickLook`
-- Package Name: `preview-all-in-one-with-quicklook`
-- Publisher: `occasional16`
-- License: `AGPL-3.0-only`
-- Repository: <https://github.com/occasional16/quicklook-for-vscode>
-- VSIX pattern: `preview-all-in-one-with-quicklook-<version>.vsix`
+- Extension ID：`occasional16.preview-all-in-one-with-quicklook`
+- Publisher：`occasional16`
+- License：`AGPL-3.0-only`
+- VSIX：`preview-all-in-one-with-quicklook-<version>.vsix`
 
-## 发布流程与职责分离最佳实践
+## 1. 准备发布
 
-为了保持 Git 提交历史的可读性与维护性，项目遵循以下**职责分离**原则：
+1. 确认目标版本已经完成功能和人工验收，相关功能提交已包含最终开发工作文档。
+2. 审查 `docs/dev/`：保留仍在进行或后续版本继续使用的文档；列出已完成、已取代或过期文档，并在确认可由 Git 追溯且获得删除授权后移除。永久保留 `docs/dev/README.md`。
+3. 将 `package.json` 和 `package-lock.json` 的版本同步为目标版本。
+4. 将 CHANGELOG 的 `Unreleased` 改为 `<version> - YYYY-MM-DD`；英文条目后提供含义对应的中文条目，只保留用户可感知变化和必要迁移说明。
+5. 检查 README、设置说明、截图、最低 VS Code 版本和支持链接。
 
-1. **开发阶段 (Feature Commits)**：
-   - 所有的功能开发、Bug 修复代码及对应的**阶段性开发设计文档**（如 `docs/dev/` 下的临时文档）应合并在对应的功能提交中（例如 `feat: ...` 或 `fix: ...`）。
-   - **优势**：此时设计文档被写入 Git 历史。即使后续在发布时被删除，未来任何人也可以通过该 feature commit 追溯并查看完整的设计文档。
-2. **发布准备阶段 (Release Commit)**：
-   - 创建一个专门的提交，其 Message 采用行业标准的 **`chore(release): v<version>`**（例如 `chore(release): v0.2.0`）。
-   - 该提交**只包含**以下发布杂务：
-     - 删除已验收的阶段性开发文档（例如 `docs/dev/*`）。
-     - 更新 `package.json` 中的 `version`。
-     - 同步 `package-lock.json`。
-     - 整理并更新 `CHANGELOG.md`。
-   - **优势**：符合 Conventional Commits 规范，确保功能代码的 commit 非常纯粹，不混入版本元数据和日志变动，便于未来进行 Cherry-pick（樱桃挑选）或回滚。
+## 2. 验证
 
----
+```powershell
+npm ci
+npm test
+npm run package
+npx vsce ls
+```
 
-## 详细发布步骤
+检查：
 
-### 1. 发布前准备与检查
+- 测试、TypeScript 编译和 VSIX 打包均成功。
+- VSIX 文件名和清单版本一致，且不包含 `src/`、`docs/`、测试、源码映射或旧 VSIX。
+- 在当前稳定版 VS Code 安装 VSIX，冒烟测试 Explorer、编辑器、Source Control、Git History 和 Markdown 三种视图。
+- 涉及最低版本能力时，在声明的最低 VS Code 版本再执行一次核心冒烟测试。
+- QuickLook 路径设置、安装检查命令和输出日志不暴露本机敏感信息。
 
-在确认功能开发完毕，且设计文档已就绪并提交后，开始进行发布准备：
+## 3. 提交与标签
 
-1. **删除开发文档**：删除 `docs/dev/` 下已验收的阶段性设计文档。
-2. **更新 README 最新动态**：同步更新 `readme.md` 中的 `## What's New in v<version>` 章节以及 `README.zh-CN.md` 中的 `## 最新动态 (v<version>)` 章节，言简意赅地向用户展示新版本变更。
-3. **更新版本号**：修改 `package.json` 中的 `version` 为新版本号（例如 `0.2.0`）。
-4. **更新 CHANGELOG**：在 `CHANGELOG.md` 中为新版本添加一条记录，写明更新日期和变更内容（确保中英双语分类标题一致对照）。
-4. **验证构建**：在根目录下运行以下命令，确保测试通过且打包成功：
+提交、推送和标签均需明确授权：
 
-   ```powershell
-   npm install --package-lock-only  # 同步 lock 文件
-   npm test                        # 运行单元测试
-   npm run package                 # 清理并重新打包 VSIX 资产
-   ```
+```powershell
+git add <release-files>
+git commit -m "chore(release): v<version>"
+git push origin main
+git tag v<version>
+git push origin v<version>
+```
 
-### 2. GitHub 发布
+发布提交应只包含版本号、锁文件、CHANGELOG、README、已确认的开发文档删除或其他明确的发布材料。删除前的文档最终版本必须已存在于更早的功能提交中。
 
-1. **提交发布准备**：
-   将版本号更新、CHANGELOG 整理和开发文档的删除一并进行提交：
+## 4. GitHub Release
 
-   ```powershell
-   git status --short
-   git add .
-   git commit -m "chore(release): v<version>"
-   ```
+从该版本 CHANGELOG 生成简短的中英对照 Release Notes，并上传 VSIX。英文和中文使用对应的 `Added / 新增`、`Changed / 变更`、`Fixed / 修复` 分类，不把开发过程和测试流水写入发布说明。
 
-2. **推送与打标签**：
-   将发布 commit 推送至主分支，并在该 commit 上创建对应版本的 Git Tag：
+```powershell
+gh release create v<version> preview-all-in-one-with-quicklook-<version>.vsix `
+  --title "Release v<version>" `
+  --notes-file <notes-file>
+```
 
-   ```powershell
-   git push origin main
-   git tag v<version>
-   git push origin v<version>
-   ```
+## 5. Visual Studio Marketplace
 
-3. **创建 GitHub Release**：
-   使用 GitHub CLI 创建 Release 并上传生成的 `.vsix` 文件作为发布资产：
-
-   ```powershell
-   gh release create v<version> preview-all-in-one-with-quicklook-<version>.vsix --title "Release v<version>" --notes-file <notes-file>
-   ```
-
-   *注：为了保持项目文档的双语一致性，Release Notes 建议使用中英文的标准化分类标题（例如：英文使用 `### Added` / `### Changed` / `### Improved`，中文相应使用 `### 新增` / `### 变更` / `### 改进`），依次排列英文和中文内容。请避免使用像“### English / ### 中文”这种无意义的语言标题。*
-
-## Marketplace 发布
-
-首次或 token 过期时登录：
+首次使用或 token 过期时：
 
 ```powershell
 npx vsce login occasional16
 ```
 
-终端提示输入 Azure DevOps PAT 时，直接在终端粘贴，不要写入仓库、文档或聊天消息。
-
-发布当前版本：
+PAT 只粘贴到终端，不写入仓库、文档或聊天。发布：
 
 ```powershell
 npx vsce publish --packagePath preview-all-in-one-with-quicklook-<version>.vsix
 ```
 
-发布后检查：
-
-- Marketplace 页面标题、简介和 README 正确。
-- License 显示 `AGPL-3.0-only`。
-- 命令可搜索。
-- 资源管理器 ``Alt+` `` 快捷键可用。
-- 编辑器标题按钮可用。
-- Source Control 变更文件右键预览可用。
-- 安装检查和路径设置命令可用。
-- `QuickLook` 输出通道日志正常。
-
-## 文档保留原则
-
-- 用户可见能力写入 [README.md](../README.md) 和 [README.zh-CN.md](../README.zh-CN.md)。
-- 版本变化写入 [CHANGELOG.md](../CHANGELOG.md)。
-- 发布步骤保留在本文档。
-- 阶段性需求文档在实现并验收后删除；历史信息通过 Git 记录追溯。
+发布后确认 Marketplace 的版本、README、License、命令、快捷键和 Source Control 菜单均正确，再关闭发布任务。

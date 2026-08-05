@@ -1,51 +1,21 @@
 # Preview All-in-One with QuickLook
 
-Preview many local file types from VS Code through the Windows [QuickLook](https://github.com/QL-Win/QuickLook) app.
+Preview files from VS Code through the Windows [QuickLook](https://github.com/QL-Win/QuickLook) app.
 
 [![Visual Studio Marketplace Version](https://badgen.net/vs-marketplace/v/occasional16.preview-all-in-one-with-quicklook)](https://marketplace.visualstudio.com/items?itemName=occasional16.preview-all-in-one-with-quicklook)
 [![Visual Studio Marketplace Installs](https://badgen.net/vs-marketplace/i/occasional16.preview-all-in-one-with-quicklook)](https://marketplace.visualstudio.com/items?itemName=occasional16.preview-all-in-one-with-quicklook)
 [![Visual Studio Marketplace Rating](https://badgen.net/vs-marketplace/rating/occasional16.preview-all-in-one-with-quicklook)](https://marketplace.visualstudio.com/items?itemName=occasional16.preview-all-in-one-with-quicklook)
-[![GitHub License](https://img.shields.io/github/license/occasional16/quicklook-for-vscode?logo=github)](https://github.com/occasional16/quicklook-for-vscode/blob/main/LICENSE.txt)
+[![GitHub License](https://img.shields.io/github/license/occasional16/quicklook-for-vscode?logo=github)](LICENSE.txt)
 
 > 中文文档：[README.zh-CN.md](README.zh-CN.md)
 
-## Features
+## Highlights
 
-- Press ``Alt+` `` or click the editor title button to preview the focused file instantly.
-- Works from Explorer, editor tabs, Source Control, Search Results, SCM History, and the Command Palette.
-- Previews pdf, office, image, video, audio, font, archive, design files, and more — powered by your local QuickLook.
-- Configure the executable path and options (`/pin`, `/top`) from the Command Palette or settings.
-- **Markdown dual pane**: opening a `.md` file automatically splits the editor into a source panel (left) and a live preview panel (right), keeping exactly two panels. Enabled by default.
-
-## What's New in v0.2.3
-
-- **New Extension Icon**: Redesigned the extension icon with a modern, minimalist fluid gradient logo.
-- **Markdown active group sync**: Refactored the layout logic to keep Group 1 as the active group and restore the sidebar focus dynamically, eliminating the right-pane flashing issue when clicking files in the explorer/SCM without locking the editor group.
-
-For the full release history, see [CHANGELOG.md](CHANGELOG.md).
-
-## Preview All-in-One Coverage
-
-This extension uses your local QuickLook installation as the preview engine. That makes VS Code Explorer, editor tabs, Search Results, Source Control changes, and SCM Graph / History a fast all-in-one preview flow instead of another single-format viewer.
-
-Examples from QuickLook's official supported formats:
-
-| Category | Examples |
-| --- | --- |
-| Text and code | `.txt`, `.log`, `.json`, `.xml`, `.yaml`, `.md`, `.csv`, `.py`, `.js`, `.ts`, `.go`, `.rs`, `.sql` |
-| Images and design assets | `.jpg`, `.png`, `.gif`, `.webp`, `.svg`, RAW images, `.psd`, `.ai`, `.fig`, `.sketch`, `.xd`, `.drawio` |
-| Documents | `.pdf`, Word, Excel, PowerPoint, OpenDocument, Visio |
-| Archives and packages | `.zip`, `.7z`, `.rar`, `.tar`, `.vsix`, `.whl`, `.jar`, comic archives |
-| Markdown and data | Markdown variants, Mermaid, `.csv`, `.tsv` |
-| Fonts | `.ttf`, `.otf`, `.woff`, `.woff2`, `.ttc` |
-| Media, web and mail | Common video/audio formats, `.html`, `.mhtml`, `.url`, `.eml`, `.msg` |
-| Binaries and installers | `.exe`, `.dll`, `.msi`, `.msix`, `.apk`, `.deb`, `.rpm` |
-| QuickLook plugins | OfficeViewer, PdfViewer-Native, PostScriptViewer, CADImport, and more |
-
-Actual preview support depends on your installed QuickLook version and QuickLook plugins. See the official QuickLook resources for the current format list:
-
-- [QuickLook README](https://github.com/QL-Win/QuickLook)
-- [QuickLook supported formats](https://github.com/QL-Win/QuickLook/blob/master/SUPPORTED_FORMATS.md)
+- Press ``Alt+` `` or use the editor-title button to preview the focused file.
+- Works from Explorer, editor tabs, Search Results, Source Control, Git Diff and History, and the Command Palette.
+- Uses your local QuickLook installation, including its installed format plugins.
+- Resolves the correct Git version for working, staged, deleted, Diff, and History files.
+- Keeps Markdown in your last source-only, preview-only, or source-and-preview workflow.
 
 ## Screenshots
 
@@ -55,100 +25,85 @@ Actual preview support depends on your installed QuickLook version and QuickLook
 
 ## Requirements
 
-- Windows.
-- VS Code 1.91.0 or later.
-- QuickLook for Windows installed and available locally.
+- Windows
+- VS Code 1.119.0 or later
+- [QuickLook for Windows](https://github.com/QL-Win/QuickLook), installed and running
 
-Install QuickLook from the official repository: <https://github.com/QL-Win/QuickLook>
-
-## Usage
+## Quick start
 
 1. Install and start QuickLook.
-2. Select a local file in VS Code Explorer, or open a file from Explorer, Search Results, Source Control changes, or SCM Graph / History.
-3. Press ``Alt+` `` in Explorer or an active editor, click the editor title preview button, or run `QuickLook: Preview with QuickLook` from the Command Palette.
+2. Select a file in Explorer or Source Control, or focus an open local or Git file.
+3. Press ``Alt+` ``, click the Preview button, or run `QuickLook: Preview with QuickLook`.
 
-The default ``Alt+` `` keybinding is scoped to Explorer and active local or Git history editors. It avoids stealing normal text input such as `Space` in the editor. You can bind `QuickLook: Preview with QuickLook` to any key or key combination in VS Code Keyboard Shortcuts.
+If QuickLook is not detected, run `QuickLook: Set QuickLook Executable Path`.
+
+### Source Control versions
+
+| Context | Previewed version |
+| --- | --- |
+| Changes and Untracked | Working copy |
+| Staged Changes | Git index |
+| Deleted files | Last version that still exists |
+| Diff and History editors | Currently focused side |
+
+The context-clicked row wins when multiple SCM rows are selected. Git versions are copied to version-labelled temporary files and removed after ten minutes or when the extension stops.
+
+## Markdown workflow
+
+Markdown files reuse the last view selected in the current workspace:
+
+| View | Layout |
+| --- | --- |
+| `preview` | One group with VS Code's native rendered Preview |
+| `source` | One group with the source editor or native SCM Diff |
+| `split` | Source or Diff in Group 1 and live Preview in Group 2 |
+
+Use VS Code's native **Open as Preview**, **Reopen as source file**, and **Open Preview to the Side** actions to select these views. Closing one side of `split` keeps the remaining view. Non-Markdown Diff, Untitled, Merge Editor, and unsupported custom editors retain native behavior.
+
+The workflow is enabled by default. Set `quicklook.markdownViewContinuity.enabled` to `false` to stop view memory and automatic layout changes. VS Code's native `*.md` Preview association remains active; explicitly associate `*.md` with `default` in `workbench.editorAssociations` if you also want source to be the default editor.
+
+Split follows `workbench.editor.openSideBySideDirection`:
+
+- `right`: source on the left and Preview on the right.
+- `down`: source above Preview; recommended when VS Code occupies half of a display.
+
+To use the stacked layout, open Settings with `Ctrl+,`, search for `workbench.editor.openSideBySideDirection`, and select `down`.
 
 ## Commands
 
-| Command | Description |
+| Command | Purpose |
 | --- | --- |
-| `QuickLook: Preview with QuickLook` | Preview the selected file, active local file, or active Git history file with QuickLook. |
-| `QuickLook: Check QuickLook Installation` | Check the configured path, detected path, and setup status. |
-| `QuickLook: Set QuickLook Executable Path` | Use a detected path, browse for `QuickLook.exe`, enter a path manually, or open settings. |
+| `QuickLook: Preview with QuickLook` | Preview the selected or active file. |
+| `QuickLook: Check QuickLook Installation` | Check path resolution and installation status. |
+| `QuickLook: Set QuickLook Executable Path` | Detect, browse for, or enter `QuickLook.exe`. |
 
 ## Settings
 
-```json
-{
-  "quicklook.executablePath": "D:\\Program Files\\QuickLook\\QuickLook.exe",
-  "quicklook.previewOptions": [],
-  "quicklook.useExplorerClipboardFallback": true,
-  "quicklook.markdownDualPane": true
-}
-```
+| Setting | Default | Purpose |
+| --- | --- | --- |
+| `quicklook.executablePath` | `QuickLook.exe` | Resolve QuickLook from `PATH` and common Installer/Scoop locations, or use an explicit custom path. |
+| `quicklook.previewOptions` | `[]` | Additional QuickLook options such as `/pin` or `/top`. |
+| `quicklook.useExplorerClipboardFallback` | `true` | Resolve Explorer keyboard selection through a temporary Copy Path operation, then restore the clipboard. |
+| `quicklook.markdownViewContinuity.enabled` | `true` | Remember and reuse the workspace Markdown view. |
+| `quicklook.markdownInitialView` | `preview` | Initial `preview`, `source`, or `split` view when no workspace view is stored. |
 
-### `quicklook.executablePath`
+## Supported formats
 
-The QuickLook executable command or full path. This local build defaults to:
-
-```text
-D:\Program Files\QuickLook\QuickLook.exe
-```
-
-If QuickLook is installed somewhere else, run `QuickLook: Set QuickLook Executable Path` and choose one of these options:
-
-- Use a detected `QuickLook.exe` path.
-- Browse for `QuickLook.exe`.
-- Enter the full path manually.
-- Open VS Code settings.
-
-### `quicklook.previewOptions`
-
-Additional command line options appended after the file path. Official QuickLook options include `/pin` and `/top`.
-
-```json
-{
-  "quicklook.previewOptions": ["/top"]
-}
-```
-
-### `quicklook.useExplorerClipboardFallback`
-
-When a keybinding is triggered from Explorer, VS Code's stable API does not directly expose the focused Explorer selection. This extension can temporarily call VS Code's Copy Path command, read the selected path, and restore the previous clipboard text immediately.
-
-Disable this setting if you do not want the extension to use that fallback.
-
-### `quicklook.markdownDualPane`
-
-When you open a Markdown file, the extension automatically arranges a two-panel layout: the source editor on the left and the built-in Markdown preview on the right. Extra editor groups are collapsed to keep exactly two panels.
-
-Disable this setting if you prefer to manage Markdown preview layout manually.
+QuickLook commonly supports text and code, images, PDF and Office documents, archives, fonts, media, mail, design assets, and other formats. Actual coverage depends on your QuickLook version and installed plugins; see the official [supported-formats list](https://github.com/QL-Win/QuickLook/blob/master/SUPPORTED_FORMATS.md).
 
 ## Troubleshooting
 
 1. Run `QuickLook: Check QuickLook Installation`.
-2. If QuickLook is not found, choose `Set Path` and select or enter your `QuickLook.exe` path.
-3. Open the `QuickLook` output channel for detailed path resolution and launch logs.
+2. Correct the executable path if needed.
+3. Open the `QuickLook` output channel for launch details.
+4. Confirm that QuickLook itself can preview the same file outside VS Code.
 
-If preview still fails, confirm that QuickLook itself can preview the same file outside VS Code.
+For support, see the [support guide](https://github.com/occasional16/quicklook-for-vscode/blob/main/SUPPORT.md).
 
-## Development
+## Development and release
 
-```powershell
-npm install
-npm test
-npm run package
-```
-
-`npm run package` cleans old VSIX files before producing the latest package.
-
-Press `F5` in VS Code to launch an Extension Development Host.
-
-## Publishing
-
-See [docs/release.md](docs/release.md) for the GitHub and Visual Studio Marketplace release flow.
+Run `npm test` to compile and test. See the [release guide](https://github.com/occasional16/quicklook-for-vscode/blob/main/docs/release.md) for packaging and publishing.
 
 ## License
 
-This project is licensed under the GNU Affero General Public License v3.0 only. See [LICENSE.txt](LICENSE.txt).
+[GNU Affero General Public License v3.0 only](LICENSE.txt)

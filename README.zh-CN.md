@@ -1,51 +1,21 @@
 # Preview All-in-One with QuickLook
 
-这个扩展把 Windows [QuickLook](https://github.com/QL-Win/QuickLook) 接入 VS Code，让你通过 QuickLook 原生预览窗口快速预览多种本地文件类型。
+通过 Windows [QuickLook](https://github.com/QL-Win/QuickLook) 在 VS Code 中快速预览文件。
 
 [![Visual Studio Marketplace Version](https://badgen.net/vs-marketplace/v/occasional16.preview-all-in-one-with-quicklook)](https://marketplace.visualstudio.com/items?itemName=occasional16.preview-all-in-one-with-quicklook)
 [![Visual Studio Marketplace Installs](https://badgen.net/vs-marketplace/i/occasional16.preview-all-in-one-with-quicklook)](https://marketplace.visualstudio.com/items?itemName=occasional16.preview-all-in-one-with-quicklook)
 [![Visual Studio Marketplace Rating](https://badgen.net/vs-marketplace/rating/occasional16.preview-all-in-one-with-quicklook)](https://marketplace.visualstudio.com/items?itemName=occasional16.preview-all-in-one-with-quicklook)
-[![GitHub License](https://img.shields.io/github/license/occasional16/quicklook-for-vscode?logo=github)](https://github.com/occasional16/quicklook-for-vscode/blob/main/LICENSE.txt)
+[![GitHub License](https://img.shields.io/github/license/occasional16/quicklook-for-vscode?logo=github)](LICENSE.txt)
 
-英文主文档：[README.md](README.md)
+> English: [README.md](README.md)
 
-## 功能
+## 主要功能
 
-- 按 ``Alt+` `` 或点击编辑器标题按钮，即可即时预览当前聚焦的文件。
-- 支持资源管理器、编辑器标签、Source Control、Search Results、SCM History 和命令面板。
-- 可预览 PDF、Office、图片、视频、音频、字体、压缩包、设计稿等多种格式——由本机 QuickLook 驱动。
-- 通过命令面板或设置配置可执行文件路径和选项（`/pin`、`/top`）。
-- **Markdown 双面板**：打开 `.md` 文件时自动将编辑器分为左侧源文件面板和右侧实时预览面板，始终保持恰好两个面板。默认启用。
-
-## 最新动态 (v0.2.3)
-
-- **全新插件图标**：重新设计了更加美观现代的极简流光渐变插件图标。
-- **Markdown 活跃组同步**：重构了布局聚焦逻辑，在重排后强制重置 Group 1 为活跃组并在单次点击时无缝还原侧边栏焦点，在不锁定编辑器组的前提下消除了在 Explorer/SCM 单击 Markdown 文件导致的右侧闪现问题。
-
-完整更新历史请参阅 [CHANGELOG.md](CHANGELOG.md)。
-
-## Preview All-in-One 覆盖面
-
-这个扩展使用本机 QuickLook 作为预览引擎。因此，VS Code 资源管理器、编辑器标签、Search Results、Source Control 变更列表和 SCM Graph / History 可以变成快速的通用预览流程，而不是又一个单格式查看器。
-
-以下是 QuickLook 官方支持格式中的部分示例：
-
-| 类别 | 示例 |
-| --- | --- |
-| 文本和代码 | `.txt`、`.log`、`.json`、`.xml`、`.yaml`、`.md`、`.csv`、`.py`、`.js`、`.ts`、`.go`、`.rs`、`.sql` |
-| 图片和设计素材 | `.jpg`、`.png`、`.gif`、`.webp`、`.svg`、RAW 图片、`.psd`、`.ai`、`.fig`、`.sketch`、`.xd`、`.drawio` |
-| 文档 | `.pdf`、Word、Excel、PowerPoint、OpenDocument、Visio |
-| 压缩包和软件包 | `.zip`、`.7z`、`.rar`、`.tar`、`.vsix`、`.whl`、`.jar`、漫画压缩包 |
-| Markdown 和数据 | Markdown 变体、Mermaid、`.csv`、`.tsv` |
-| 字体 | `.ttf`、`.otf`、`.woff`、`.woff2`、`.ttc` |
-| 音视频、网页和邮件 | 常见视频/音频格式、`.html`、`.mhtml`、`.url`、`.eml`、`.msg` |
-| 二进制和安装包 | `.exe`、`.dll`、`.msi`、`.msix`、`.apk`、`.deb`、`.rpm` |
-| QuickLook 插件 | OfficeViewer、PdfViewer-Native、PostScriptViewer、CADImport 等 |
-
-实际可预览格式取决于你本机安装的 QuickLook 版本和 QuickLook 插件。最新格式范围请参考 QuickLook 官方资料：
-
-- [QuickLook README](https://github.com/QL-Win/QuickLook)
-- [QuickLook supported formats](https://github.com/QL-Win/QuickLook/blob/master/SUPPORTED_FORMATS.md)
+- 按 ``Alt+` `` 或点击编辑器标题栏按钮，预览当前聚焦文件。
+- 支持 Explorer、编辑器标签、Search Results、Source Control、Git Diff / History 和命令面板。
+- 复用本机 QuickLook 及其已安装的格式插件。
+- 为工作区、暂存区、删除、Diff 和 History 文件选择正确的 Git 版本。
+- Markdown 延续工作区最近使用的仅源码、仅预览或源码加预览视图。
 
 ## 截图
 
@@ -55,83 +25,85 @@
 
 ## 使用要求
 
-- Windows。
-- VS Code 1.91.0 或更高版本。
-- 本地已安装并启动 QuickLook。
+- Windows
+- VS Code 1.119.0 或更高版本
+- 已安装并启动 [QuickLook for Windows](https://github.com/QL-Win/QuickLook)
 
-QuickLook 官方仓库：<https://github.com/QL-Win/QuickLook>
-
-## 使用方式
+## 快速开始
 
 1. 安装并启动 QuickLook。
-2. 在 VS Code 资源管理器里选中一个本地文件，或从资源管理器、Search Results、Source Control 变更列表、SCM Graph / History 打开一个文件。
-3. 在资源管理器或当前编辑器中按 ``Alt+` ``，也可以点击编辑器标题右侧预览按钮，或从命令面板运行 `QuickLook: Preview with QuickLook`。
+2. 在 Explorer 或 Source Control 中选中文件，或聚焦已打开的本地/Git 文件。
+3. 按 ``Alt+` ``、点击 Preview 按钮，或运行 `QuickLook: Preview with QuickLook`。
 
-默认 ``Alt+` `` 快捷键只在资源管理器、当前本地编辑器或 Git 历史编辑器中生效，避免抢占编辑器正文中的 `Space` 输入。你也可以在 VS Code Keyboard Shortcuts 中给 `QuickLook: Preview with QuickLook` 设置任意快捷键或组合键。
+如果未检测到 QuickLook，请运行 `QuickLook: Set QuickLook Executable Path`。
+
+### Source Control 版本
+
+| 位置 | 预览版本 |
+| --- | --- |
+| Changes 和 Untracked | 工作区版本 |
+| Staged Changes | Git 暂存区版本 |
+| 删除文件 | 最后仍存在的版本 |
+| Diff 和 History 编辑器 | 当前聚焦侧 |
+
+SCM 多选时以实际右键触发的条目为准。Git 版本会写入带版本名称的临时文件，并在十分钟后或扩展停止时清理。
+
+## Markdown 工作流
+
+Markdown 文件会延续当前工作区最近选择的视图：
+
+| 视图 | 布局 |
+| --- | --- |
+| `preview` | 一个 Group，显示 VS Code 原生渲染预览 |
+| `source` | 一个 Group，显示源码编辑器或原生 SCM Diff |
+| `split` | Group 1 显示源码/Diff，Group 2 显示实时预览 |
+
+使用 VS Code 原生 **Open as Preview**、**Reopen as source file** 和 **Open Preview to the Side** 选择视图。关闭 `split` 的任一侧后保留另一侧。非 Markdown Diff、Untitled、Merge Editor 和不支持的自定义编辑器保持原生行为。
+
+该工作流默认开启。将 `quicklook.markdownViewContinuity.enabled` 设为 `false` 可停止视图记忆和自动布局。VS Code 原生 `*.md` Preview 默认关联仍然生效；若还希望默认使用源码编辑器，请在 `workbench.editorAssociations` 中将 `*.md` 显式关联为 `default`。
+
+`split` 遵循 `workbench.editor.openSideBySideDirection`：
+
+- `right`：源码在左，预览在右。
+- `down`：源码在上，预览在下；推荐用于 VS Code 占据半屏的情况。
+
+设置上下布局：按 `Ctrl+,` 打开设置，搜索 `workbench.editor.openSideBySideDirection`，选择 `down`。
 
 ## 命令
 
-| 命令 | 说明 |
+| 命令 | 用途 |
 | --- | --- |
-| `QuickLook: Preview with QuickLook` | 使用 QuickLook 预览选中文件、当前本地文件或当前 Git 历史文件。 |
-| `QuickLook: Check QuickLook Installation` | 检查配置路径、探测路径和安装状态。 |
-| `QuickLook: Set QuickLook Executable Path` | 使用探测路径、浏览选择、手动输入或打开设置。 |
+| `QuickLook: Preview with QuickLook` | 预览选中或当前文件。 |
+| `QuickLook: Check QuickLook Installation` | 检查路径解析和安装状态。 |
+| `QuickLook: Set QuickLook Executable Path` | 探测、浏览选择或输入 `QuickLook.exe`。 |
 
-## 配置
+## 设置
 
-```json
-{
-  "quicklook.executablePath": "D:\\Program Files\\QuickLook\\QuickLook.exe",
-  "quicklook.previewOptions": [],
-  "quicklook.useExplorerClipboardFallback": true,
-  "quicklook.markdownDualPane": true
-}
-```
+| 设置 | 默认值 | 用途 |
+| --- | --- | --- |
+| `quicklook.executablePath` | `QuickLook.exe` | 从 `PATH` 和常见 Installer/Scoop 目录探测，或使用显式自定义路径。 |
+| `quicklook.previewOptions` | `[]` | `/pin`、`/top` 等额外选项。 |
+| `quicklook.useExplorerClipboardFallback` | `true` | 通过临时 Copy Path 获取 Explorer 键盘选中项，随后恢复剪贴板。 |
+| `quicklook.markdownViewContinuity.enabled` | `true` | 记住并延续工作区 Markdown 视图。 |
+| `quicklook.markdownInitialView` | `preview` | 工作区无历史视图时使用 `preview`、`source` 或 `split`。 |
 
-`quicklook.executablePath` 是 QuickLook 可执行文件命令或完整路径。当前本地构建默认值为：
+## 支持格式
 
-```text
-D:\Program Files\QuickLook\QuickLook.exe
-```
-
-如果 QuickLook 安装在其他位置，可以运行 `QuickLook: Set QuickLook Executable Path`，然后选择自动探测结果、浏览选择 `QuickLook.exe`、手动输入完整路径或打开设置。
-
-`quicklook.previewOptions` 会追加到文件路径后面，官方支持的参数包括 `/pin` 和 `/top`。
-
-```json
-{
-  "quicklook.previewOptions": ["/top"]
-}
-```
-
-`quicklook.useExplorerClipboardFallback` 用于支持资源管理器焦点下的快捷键预览。VS Code 稳定 API 不直接暴露资源管理器当前选中项，因此扩展会临时调用 VS Code 的 Copy Path 命令读取选中路径，并立即恢复原剪贴板文本。
-
-`quicklook.markdownDualPane` 控制 Markdown 双面板功能。打开 `.md` 文件时，扩展自动将编辑器排列为两个面板：左侧源文件编辑器，右侧内置 Markdown 预览。多余的编辑器组会被合并，始终保持恰好两个面板。如果你希望手动管理 Markdown 预览布局，可以关闭此设置。
+QuickLook 通常支持文本和代码、图片、PDF 和 Office 文档、压缩包、字体、音视频、邮件、设计素材等格式。实际范围取决于 QuickLook 版本和已安装插件，请以官方[支持格式列表](https://github.com/QL-Win/QuickLook/blob/master/SUPPORTED_FORMATS.md)为准。
 
 ## 故障排查
 
 1. 运行 `QuickLook: Check QuickLook Installation`。
-2. 如果没有找到 QuickLook，选择 `Set Path` 并选择或输入 `QuickLook.exe` 路径。
-3. 打开 `QuickLook` 输出通道查看路径解析和启动日志。
+2. 必要时修正可执行文件路径。
+3. 打开 `QuickLook` 输出通道查看启动详情。
+4. 确认 QuickLook 在 VS Code 外部可以预览同一文件。
 
-如果仍无法预览，请先确认 QuickLook 在 VS Code 外部可以正常预览同一个文件。
+支持方式见[支持指南](https://github.com/occasional16/quicklook-for-vscode/blob/main/SUPPORT.md)。
 
-## 开发
+## 开发与发布
 
-```powershell
-npm install
-npm test
-npm run package
-```
-
-`npm run package` 会先清理旧 VSIX，再生成最新安装包。
-
-按 `F5` 可启动 Extension Development Host 调试扩展。
-
-## 发布流程
-
-见 [docs/release.md](docs/release.md)。
+运行 `npm test` 编译并测试。打包和发布流程见[发布指南](https://github.com/occasional16/quicklook-for-vscode/blob/main/docs/release.md)。
 
 ## 许可证
 
-本项目使用 GNU Affero General Public License v3.0 only 许可证。详见 [LICENSE.txt](LICENSE.txt)。
+[GNU Affero General Public License v3.0 only](LICENSE.txt)

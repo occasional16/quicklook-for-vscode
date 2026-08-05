@@ -7,7 +7,7 @@
   "license": "AGPL-3.0-only",
   "icon": "assets/icon.png",
   "engines": {
-    "vscode": "^1.91.0"
+    "vscode": "^1.119.0"
   },
   "activationEvents": [
     "onLanguage:markdown"
@@ -57,9 +57,35 @@
     "package:clean": "npm run package"
   },
   "contributes": {
+    "configurationDefaults": {
+      "workbench.editorAssociations": {
+        "*.md": "vscode.markdown.preview.editor"
+      },
+      "workbench.diffEditorAssociations": {
+        "*.md": "default"
+      }
+    },
     "commands": [
       {
         "command": "quicklook.previewFile",
+        "title": "Preview with QuickLook",
+        "category": "QuickLook",
+        "icon": "$(eye)"
+      },
+      {
+        "command": "quicklook.previewScmWorkingTree",
+        "title": "Preview with QuickLook",
+        "category": "QuickLook",
+        "icon": "$(eye)"
+      },
+      {
+        "command": "quicklook.previewScmIndex",
+        "title": "Preview with QuickLook",
+        "category": "QuickLook",
+        "icon": "$(eye)"
+      },
+      {
+        "command": "quicklook.previewScmUntracked",
         "title": "Preview with QuickLook",
         "category": "QuickLook",
         "icon": "$(eye)"
@@ -110,6 +136,20 @@
       }
     ],
     "menus": {
+      "commandPalette": [
+        {
+          "command": "quicklook.previewScmWorkingTree",
+          "when": "false"
+        },
+        {
+          "command": "quicklook.previewScmIndex",
+          "when": "false"
+        },
+        {
+          "command": "quicklook.previewScmUntracked",
+          "when": "false"
+        }
+      ],
       "explorer/context": [
         {
           "command": "quicklook.previewFile",
@@ -140,8 +180,18 @@
       ],
       "scm/resourceState/context": [
         {
-          "command": "quicklook.previewFile",
-          "when": "scmProvider == git",
+          "command": "quicklook.previewScmWorkingTree",
+          "when": "scmProvider == git && scmResourceGroup == workingTree",
+          "group": "navigation@10"
+        },
+        {
+          "command": "quicklook.previewScmIndex",
+          "when": "scmProvider == git && scmResourceGroup == index",
+          "group": "navigation@10"
+        },
+        {
+          "command": "quicklook.previewScmUntracked",
+          "when": "scmProvider == git && scmResourceGroup == untracked",
           "group": "navigation@10"
         }
       ]
@@ -151,8 +201,8 @@
       "properties": {
         "quicklook.executablePath": {
           "type": "string",
-          "default": "D:\\Program Files\\QuickLook\\QuickLook.exe",
-          "markdownDescription": "QuickLook executable command or full path. Defaults to `D:\\Program Files\\QuickLook\\QuickLook.exe` for this local build."
+          "default": "QuickLook.exe",
+          "markdownDescription": "QuickLook executable command or full path. By default the extension searches `PATH` and common Installer or Scoop locations; set an explicit path for portable or custom installations."
         },
         "quicklook.previewOptions": {
           "type": "array",
@@ -174,10 +224,25 @@
           "default": true,
           "markdownDescription": "Use VS Code's Copy Path command to resolve the focused Explorer selection when a keybinding does not provide a resource URI. The previous clipboard text is restored immediately."
         },
-        "quicklook.markdownDualPane": {
+        "quicklook.markdownViewContinuity.enabled": {
           "type": "boolean",
           "default": true,
-          "markdownDescription": "When opening a Markdown file, automatically arrange a two-panel layout with the source editor on the left and the built-in Markdown preview on the right. Ensures the editor area has exactly two panels."
+          "markdownDescription": "Remember and continue the last `source`, `preview`, or `split` Markdown view in this workspace. Disable to stop automatic Markdown view memory and layout changes; the current editor layout is left unchanged."
+        },
+        "quicklook.markdownInitialView": {
+          "type": "string",
+          "default": "preview",
+          "enum": [
+            "preview",
+            "source",
+            "split"
+          ],
+          "enumDescriptions": [
+            "Start with VS Code's native rendered preview in one editor group.",
+            "Start with the Markdown source editor in one editor group.",
+            "Start with the source and VS Code's native live preview in two editor groups."
+          ],
+          "markdownDescription": "Sets the initial view only when this workspace has no remembered Markdown view. Later Markdown files reuse the last selected `source`, `preview`, or `split` view."
         }
       }
     }

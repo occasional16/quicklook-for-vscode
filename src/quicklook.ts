@@ -14,15 +14,9 @@ export interface QuickLookExecutableResolution {
   checkedPaths: readonly string[];
 }
 
-export const defaultExecutablePath = 'D:\\Program Files\\QuickLook\\QuickLook.exe';
+export const defaultExecutablePath = 'QuickLook.exe';
 
-const pathLookupExecutable = 'quicklook';
 const quickLookFileName = 'QuickLook.exe';
-const commonExecutablePaths = [
-  defaultExecutablePath,
-  'C:\\Program Files\\QuickLook\\QuickLook.exe',
-  'C:\\Program Files (x86)\\QuickLook\\QuickLook.exe'
-];
 
 export function normalizeExecutablePath(value: unknown): string {
   if (typeof value !== 'string') {
@@ -35,7 +29,7 @@ export function normalizeExecutablePath(value: unknown): string {
   }
 
   const unquotedValue = stripWrappingQuotes(trimmedValue);
-  if (unquotedValue.toLowerCase() === pathLookupExecutable) {
+  if (['quicklook', 'quicklook.exe'].includes(unquotedValue.toLowerCase())) {
     return defaultExecutablePath;
   }
 
@@ -67,8 +61,16 @@ export function normalizePreviewOptions(value: readonly unknown[] | undefined): 
   return normalizedOptions;
 }
 
-export function getQuickLookExecutableCandidates(configuredExecutablePath: string): string[] {
-  const candidates = [configuredExecutablePath, ...commonExecutablePaths];
+export function getQuickLookExecutableCandidates(
+  configuredExecutablePath: string,
+  environment: NodeJS.ProcessEnv = process.env
+): string[] {
+  const normalizedConfiguredPath = normalizeExecutablePath(configuredExecutablePath);
+  const candidates = [
+    normalizedConfiguredPath,
+    ...getPathExecutableCandidates(environment),
+    ...getCommonExecutablePaths(environment)
+  ];
   const normalizedCandidates: string[] = [];
   const seenCandidates = new Set<string>();
 
@@ -94,29 +96,28 @@ export function getQuickLookExecutableCandidates(configuredExecutablePath: strin
 export async function resolveQuickLookExecutable(configuredExecutablePath: string): Promise<QuickLookExecutableResolution> {
   const normalizedExecutablePath = normalizeExecutablePath(configuredExecutablePath);
   const checkedPaths = getQuickLookExecutableCandidates(normalizedExecutablePath);
-
-  if (path.win32.isAbsolute(normalizedExecutablePath) && await pathExists(normalizedExecutablePath)) {
-    return {
-      executablePath: normalizedExecutablePath,
-      foundOnDisk: true,
-      source: 'configured',
-      checkedPaths
-    };
-  }
+  const configuredPathKey = path.win32.isAbsolute(normalizedExecutablePath)
+    ? normalizedExecutablePath.toLowerCase()
+    : undefined;
+  const pathCandidateKeys = new Set(
+    getPathExecutableCandidates(process.env).map(candidate => candidate.toLowerCase())
+  );
 
   for (const candidatePath of checkedPaths) {
     if (await pathExists(candidatePath)) {
       return {
         executablePath: candidatePath,
         foundOnDisk: true,
-        source: 'detected',
+        source: candidatePath.toLowerCase() === configuredPathKey
+          ? 'configured'
+          : pathCandidateKeys.has(candidatePath.toLowerCase()) ? 'path' : 'detected',
         checkedPaths
       };
     }
   }
 
   return {
-    executablePath: path.win32.isAbsolute(normalizedExecutablePath) ? normalizedExecutablePath : pathLookupExecutable,
+    executablePath: normalizedExecutablePath,
     foundOnDisk: false,
     source: 'path',
     checkedPaths
@@ -209,4 +210,37 @@ function stripWrappingQuotes(value: string): string {
   }
 
   return value;
+}
+
+function getPathExecutableCandidates(environment: NodeJS.ProcessEnv): string[] {
+  const pathValue = getEnvironmentValue(environment, 'PATH');
+  if (!pathValue) {
+    return [];
+  }
+
+  return pathValue
+    .split(path.win32.delimiter)
+    .map(entry => stripWrappingQuotes(entry.trim()))
+    .filter(Boolean)
+    .map(entry => path.win32.join(entry, quickLookFileName));
+}
+
+function getCommonExecutablePaths(environment: NodeJS.ProcessEnv): string[] {
+  const localAppData = getEnvironmentValue(environment, 'LOCALAPPDATA');
+  const programFiles = getEnvironmentValue(environment, 'ProgramFiles');
+  const programFilesX86 = getEnvironmentValue(environment, 'ProgramFiles(x86)');
+  const userProfile = getEnvironmentValue(environment, 'USERPROFILE');
+
+  return [
+    localAppData && path.win32.join(localAppData, 'Programs', 'QuickLook', quickLookFileName),
+    programFiles && path.win32.join(programFiles, 'QuickLook', quickLookFileName),
+    programFilesX86 && path.win32.join(programFilesX86, 'QuickLook', quickLookFileName),
+    userProfile && path.win32.join(userProfile, 'scoop', 'apps', 'quicklook', 'current', quickLookFileName),
+    'D:\\Program Files\\QuickLook\\QuickLook.exe'
+  ].filter((candidate): candidate is string => Boolean(candidate));
+}
+
+function getEnvironmentValue(environment: NodeJS.ProcessEnv, name: string): string | undefined {
+  const matchingKey = Object.keys(environment).find(key => key.toLowerCase() === name.toLowerCase());
+  return matchingKey ? environment[matchingKey] : undefined;
 }

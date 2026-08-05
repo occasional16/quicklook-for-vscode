@@ -1,12 +1,16 @@
 .vscode/**
 .vscode-test/**
 .github/**
+AGENTS.md
+SECURITY.md
+SUPPORT.md
 .gitignore
 docs/**
 scripts/**
 src/**
 Debug/**
 out/test/**
+out/**/*.json
 **/*.map
 tsconfig.json
 package-lock.json
