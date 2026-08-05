@@ -34,7 +34,14 @@ npx vsce ls
 - 涉及最低版本能力时，在声明的最低 VS Code 版本再执行一次核心冒烟测试。
 - QuickLook 路径设置、安装检查命令和输出日志不暴露本机敏感信息。
 
-## 3. 提交与标签
+## 3. 最终确认、提交与标签
+
+完成准备和验证后必须停止，并向开发者报告目标版本、准确变更范围、验证结果、VSIX 和遗留风险。只有开发者明确确认“当前内容即最终发布内容”后，才能执行其明确授权的提交、推送、标签、GitHub Release 和 Marketplace 发布。
+
+- “准备发布”不等于允许外部发布。
+- 开发者表示仍有修改时，立即停止所有推送、标签、Release 和 Marketplace 工作流。
+- GitHub Release 和 Marketplace 网页发布都只能在开发者最终确认后执行。
+- 本地提交也仍需单独授权；最终确认不能反向扩大先前授权范围。
 
 提交、推送和标签均需明确授权：
 
@@ -60,16 +67,11 @@ gh release create v<version> preview-all-in-one-with-quicklook-<version>.vsix `
 
 ## 5. Visual Studio Marketplace
 
-首次使用或 token 过期时：
+仅在开发者最终确认后，通过 [Manage Publishers & Extensions](https://marketplace.visualstudio.com/manage/publishers/) 手动发布：
 
-```powershell
-npx vsce login occasional16
-```
+1. 登录后选择 Publisher `occasional16` 和对应扩展。
+2. 使用页面提供的更新入口，上传 GitHub Release 中同名、同校验值的 `preview-all-in-one-with-quicklook-<version>.vsix`。
+3. 按页面提示确认提交；不要改传本地重新生成或未经验证的文件。
+4. 发布后确认 Marketplace 的版本、README、License、命令、快捷键和 Source Control 菜单均正确。
 
-PAT 只粘贴到终端，不写入仓库、文档或聊天。发布：
-
-```powershell
-npx vsce publish --packagePath preview-all-in-one-with-quicklook-<version>.vsix
-```
-
-发布后确认 Marketplace 的版本、README、License、命令、快捷键和 Source Control 菜单均正确，再关闭发布任务。
+本项目不配置 Marketplace 自动发布、Entra 工作负载身份或长期 PAT。Marketplace 与 GitHub Release 是独立发布步骤，任一步骤均需开发者明确授权。

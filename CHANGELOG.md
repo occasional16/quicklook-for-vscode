@@ -2,7 +2,7 @@
 
 Notable user-visible changes are documented here. Development details remain in Git history and `docs/dev/`.
 
-## Unreleased
+## 0.3.0 - 2026-08-06
 
 ### Added
 
