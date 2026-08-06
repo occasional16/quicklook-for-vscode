@@ -17,12 +17,6 @@
 - 为工作区、暂存区、删除、Diff 和 History 文件选择正确的 Git 版本。
 - Markdown 延续工作区最近使用的仅源码、仅预览或源码加预览视图。
 
-## 截图
-
-![使用 QuickLook 预览选中文件](assets/screenshot-preview.png)
-
-![设置 QuickLook 可执行文件路径](assets/screenshot-path-setup.png)
-
 ## 使用要求
 
 - Windows

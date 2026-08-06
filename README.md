@@ -17,12 +17,6 @@ Preview files from VS Code through the Windows [QuickLook](https://github.com/QL
 - Resolves the correct Git version for working, staged, deleted, Diff, and History files.
 - Keeps Markdown in your last source-only, preview-only, or source-and-preview workflow.
 
-## Screenshots
-
-![Preview selected files with QuickLook](assets/screenshot-preview.png)
-
-![Set the QuickLook executable path](assets/screenshot-path-setup.png)
-
 ## Requirements
 
 - Windows
